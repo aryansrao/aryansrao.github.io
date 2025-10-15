@@ -398,5 +398,17 @@
 
     <script src="script.js"></script>
     <script type="module" src="threejs-scene.js"></script>
+
+    <!-- Tech Stack Modal -->
+    <div id="tech-modal" class="tech-modal" aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="tech-modal-title">
+        <div class="tech-modal-backdrop" data-close></div>
+        <div class="tech-modal-panel" role="document">
+            <button class="tech-modal-close" aria-label="Close tech modal">✕</button>
+            <h2 id="tech-modal-title">Tech Stack — How I use them</h2>
+            <div id="tech-modal-content" class="tech-modal-content">
+                <!-- populated by JS -->
+            </div>
+        </div>
+    </div>
 </body>
 </html>
