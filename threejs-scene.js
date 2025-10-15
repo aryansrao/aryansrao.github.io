@@ -1,4 +1,4 @@
-import * as THREE from 'three';
+import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js';
 
 // Initialize Three.js scene for the accent box
 function initAccentScene() {
@@ -278,11 +278,17 @@ if (document.readyState === 'loading') {
         initAccentScene();
         initDevelopmentScene();
         initUIUXScene();
+            initWorkPageScene();
+            initKingRajasthanScene();
+            initUpcomingScene();
     });
 } else {
     initAccentScene();
     initDevelopmentScene();
     initUIUXScene();
+        initWorkPageScene();
+        initKingRajasthanScene();
+        initUpcomingScene();
 }
 
 // Initialize Three.js scene for the UI/UX Design service card
@@ -370,5 +376,215 @@ function initUIUXScene() {
         renderer.setSize(newWidth, newHeight);
     });
     
+    resizeObserver.observe(container);
+}
+
+// Initialize Three.js scene for the King Rajasthan Royals large card
+function initKingRajasthanScene() {
+    const canvas = document.getElementById('kingrajasthan-canvas');
+    if (!canvas) return;
+
+    const container = canvas.parentElement;
+    const width = container.clientWidth;
+    const height = container.clientHeight;
+
+    const scene = new THREE.Scene();
+    const camera = new THREE.PerspectiveCamera(50, width / height, 0.1, 1000);
+    camera.position.z = 4;
+
+    const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true });
+    renderer.setSize(width, height);
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+
+    // Sphere
+    const geo = new THREE.IcosahedronGeometry(1.2, 1);
+    const mat = new THREE.MeshBasicMaterial({ color: 0xffffff, wireframe: true, opacity: 0.85, transparent: true });
+    const mesh = new THREE.Mesh(geo, mat);
+    scene.add(mesh);
+
+    // particles
+    const pGeo = new THREE.BufferGeometry();
+    const pCount = 80;
+    const positions = new Float32Array(pCount * 3);
+    for (let i = 0; i < pCount * 3; i++) positions[i] = (Math.random() - 0.5) * 4;
+    pGeo.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+    const pMat = new THREE.PointsMaterial({ color: 0xffffff, size: 0.02, transparent: true, opacity: 0.6 });
+    const points = new THREE.Points(pGeo, pMat);
+    scene.add(points);
+
+    let mouseX = 0, mouseY = 0, targetX = 0, targetY = 0;
+    container.addEventListener('mousemove', (e) => {
+        const rect = container.getBoundingClientRect();
+        mouseX = ((e.clientX - rect.left) / rect.width) * 2 - 1;
+        mouseY = -((e.clientY - rect.top) / rect.height) * 2 + 1;
+        targetX = mouseY * 0.6;
+        targetY = mouseX * 0.6;
+    });
+
+    function animate() {
+        requestAnimationFrame(animate);
+        mesh.rotation.x += (targetX - mesh.rotation.x) * 0.05 + 0.002;
+        mesh.rotation.y += (targetY - mesh.rotation.y) * 0.05 + 0.003;
+        points.rotation.y += 0.001;
+        renderer.render(scene, camera);
+    }
+
+    animate();
+
+    const ro = new ResizeObserver(() => {
+        const w = container.clientWidth; const h = container.clientHeight;
+        camera.aspect = w / h; camera.updateProjectionMatrix(); renderer.setSize(w, h);
+    });
+    ro.observe(container);
+}
+
+// Initialize Three.js scene for the work page accent box
+function initWorkPageScene() {
+    const canvas = document.getElementById('work-threejs-canvas');
+    if (!canvas) return;
+
+    const container = canvas.parentElement;
+    const width = container.clientWidth;
+    const height = container.clientHeight;
+
+    const scene = new THREE.Scene();
+    const camera = new THREE.PerspectiveCamera(45, width / height, 0.1, 1000);
+    camera.position.z = 3;
+
+    const renderer = new THREE.WebGLRenderer({
+        canvas: canvas,
+        alpha: true,
+        antialias: true
+    });
+    renderer.setSize(width, height);
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+
+    const geometry = new THREE.SphereGeometry(0.8, 32, 32);
+    const material = new THREE.MeshBasicMaterial({
+        color: 0xffffff,
+        wireframe: true,
+        transparent: true,
+        opacity: 0.7
+    });
+    
+    const sphere = new THREE.Mesh(geometry, material);
+    scene.add(sphere);
+
+    const particlesGeometry = new THREE.BufferGeometry();
+    const particlesCount = 80;
+    const positions = new Float32Array(particlesCount * 3);
+    for (let i = 0; i < particlesCount * 3; i++) {
+        positions[i] = (Math.random() - 0.5) * 3;
+    }
+    particlesGeometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+    
+    const particlesMaterial = new THREE.PointsMaterial({
+        color: 0xffffff,
+        size: 0.02,
+        transparent: true,
+        opacity: 0.5
+    });
+
+    const particles = new THREE.Points(particlesGeometry, particlesMaterial);
+    scene.add(particles);
+
+    let mouseX = 0, mouseY = 0, targetRotationX = 0, targetRotationY = 0;
+
+    container.addEventListener('mousemove', (event) => {
+        const rect = container.getBoundingClientRect();
+        mouseX = ((event.clientX - rect.left) / width) * 2 - 1;
+        mouseY = -((event.clientY - rect.top) / height) * 2 + 1;
+        targetRotationX = mouseY * 0.5;
+        targetRotationY = mouseX * 0.5;
+    });
+
+    function animate() {
+        requestAnimationFrame(animate);
+        sphere.rotation.x += (targetRotationX - sphere.rotation.x) * 0.05;
+        sphere.rotation.y += (targetRotationY - sphere.rotation.y) * 0.05;
+        sphere.rotation.x += 0.002;
+        sphere.rotation.y += 0.003;
+        particles.rotation.y += 0.001;
+        particles.rotation.x += 0.0005;
+        const scale = 1 + Math.sin(Date.now() * 0.001) * 0.05;
+        sphere.scale.set(scale, scale, scale);
+        renderer.render(scene, camera);
+    }
+
+    animate();
+
+    const resizeObserver = new ResizeObserver(() => {
+        const newWidth = container.clientWidth;
+        const newHeight = container.clientHeight;
+        camera.aspect = newWidth / newHeight;
+        camera.updateProjectionMatrix();
+        renderer.setSize(newWidth, newHeight);
+    });
+    
+    resizeObserver.observe(container);
+}
+
+// Initialize Three.js scene for the upcoming projects card
+function initUpcomingScene() {
+    const canvas = document.getElementById('upcoming-canvas');
+    if (!canvas) return;
+
+    const container = canvas.parentElement;
+    const width = container.clientWidth;
+    const height = container.clientHeight;
+
+    const scene = new THREE.Scene();
+    const camera = new THREE.PerspectiveCamera(50, width / height, 0.1, 1000);
+    camera.position.z = 4;
+
+    const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true });
+    renderer.setSize(width, height);
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+
+    // Rotating cube
+    const geo = new THREE.BoxGeometry(1.2, 1.2, 1.2);
+    const mat = new THREE.MeshBasicMaterial({ color: 0xffffff, wireframe: true, transparent: true, opacity: 0.85 });
+    const cube = new THREE.Mesh(geo, mat);
+    scene.add(cube);
+
+    // Particles for ambient motion
+    const pGeo = new THREE.BufferGeometry();
+    const pCount = 60;
+    const positions = new Float32Array(pCount * 3);
+    for (let i = 0; i < pCount * 3; i++) positions[i] = (Math.random() - 0.5) * 4;
+    pGeo.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+    const pMat = new THREE.PointsMaterial({ color: 0xffffff, size: 0.02, transparent: true, opacity: 0.45 });
+    const points = new THREE.Points(pGeo, pMat);
+    scene.add(points);
+
+    let mouseX = 0, mouseY = 0;
+    container.addEventListener('mousemove', (e) => {
+        const rect = container.getBoundingClientRect();
+        mouseX = ((e.clientX - rect.left) / rect.width) * 2 - 1;
+        mouseY = -((e.clientY - rect.top) / rect.height) * 2 + 1;
+    });
+
+    function animate() {
+        requestAnimationFrame(animate);
+        const time = Date.now() * 0.001;
+        cube.rotation.x = Math.sin(time * 0.6) * 0.6;
+        cube.rotation.y = Math.cos(time * 0.4) * 0.6;
+        points.rotation.y += 0.001;
+        // subtle parallax
+        camera.position.x += (mouseX * 1.5 - camera.position.x) * 0.03;
+        camera.position.y += (-mouseY * 1.5 - camera.position.y) * 0.03;
+        camera.lookAt(scene.position);
+        renderer.render(scene, camera);
+    }
+
+    animate();
+
+    const resizeObserver = new ResizeObserver(() => {
+        const newWidth = container.clientWidth;
+        const newHeight = container.clientHeight;
+        camera.aspect = newWidth / newHeight;
+        camera.updateProjectionMatrix();
+        renderer.setSize(newWidth, newHeight);
+    });
     resizeObserver.observe(container);
 }

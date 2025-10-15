@@ -237,18 +237,21 @@ document.addEventListener('DOMContentLoaded', () => {
     window.addEventListener('scroll', () => {
         if (!ticking) {
             window.requestAnimationFrame(() => {
-                const hero = document.querySelector('.hero');
+                // Try primary hero selector, fallback to work-hero. If neither exists, skip parallax.
+                const hero = document.querySelector('.hero') || document.querySelector('.work-hero');
+                if (!hero) { ticking = false; return; }
+
                 const scrolled = window.scrollY;
                 const heroRect = hero.getBoundingClientRect();
-                
+
                 if (heroRect.top < window.innerHeight && heroRect.bottom > 0) {
                     const opacity = Math.max(0.3, 1 - (scrolled / (window.innerHeight * 0.8)));
                     hero.style.opacity = opacity;
                 }
-                
+
                 ticking = false;
             });
-            
+
             ticking = true;
         }
     });
@@ -404,31 +407,81 @@ document.addEventListener('DOMContentLoaded', () => {
         backdrop.className = 'work-image-overlay';
         backdrop.tabIndex = -1;
         document.body.appendChild(backdrop);
+
         const animImg = document.createElement('img');
         animImg.src = src;
         animImg.alt = alt;
         animImg.className = 'work-image-anim';
         document.body.appendChild(animImg);
+
+        // Ensure variables are shared across helpers
+        let expandTimeout = null;
+        let naturalW = 0, naturalH = 0;
+        let vw = window.innerWidth, vh = window.innerHeight;
+        let targetWidth = 0, targetHeight = 0, targetLeft = 0, targetTop = 0;
+
+        // Set initial rect (either origin or small centered box)
         if (originRect) {
             animImg.style.left = originRect.left + 'px';
             animImg.style.top = originRect.top + 'px';
             animImg.style.width = originRect.width + 'px';
             animImg.style.height = originRect.height + 'px';
         } else {
-            const vw = window.innerWidth; const vh = window.innerHeight;
-            animImg.style.left = (vw/2 - 50) + 'px';
-            animImg.style.top = (vh/2 - 50) + 'px';
-            animImg.style.width = '100px';
-            animImg.style.height = '100px';
+            const startW = 100, startH = 100;
+            animImg.style.left = (vw / 2 - startW / 2) + 'px';
+            animImg.style.top = (vh / 2 - startH / 2) + 'px';
+            animImg.style.width = startW + 'px';
+            animImg.style.height = startH + 'px';
         }
+
+        const cleanup = () => {
+            if (expandTimeout) clearTimeout(expandTimeout);
+            backdrop.remove();
+            animImg.remove();
+            document.removeEventListener('keydown', onKey);
+            backdrop.removeEventListener('click', onBackdropClick);
+            animImg.removeEventListener('dblclick', onDblClick);
+        };
+
+        const closeSequence = () => {
+            // compute centered small target for reversing
+            vw = window.innerWidth; vh = window.innerHeight;
+            const centeredLeft = (vw - targetWidth) / 2;
+            const centeredTop = (vh - targetHeight) / 2;
+            animImg.classList.remove('expanded');
+            animImg.style.left = centeredLeft + 'px';
+            animImg.style.top = centeredTop + 'px';
+            animImg.style.width = targetWidth + 'px';
+            animImg.style.height = targetHeight + 'px';
+            backdrop.classList.remove('dimmed');
+
+            setTimeout(() => {
+                if (originRect) {
+                    animImg.style.left = originRect.left + 'px';
+                    animImg.style.top = originRect.top + 'px';
+                    animImg.style.width = originRect.width + 'px';
+                    animImg.style.height = originRect.height + 'px';
+                }
+                setTimeout(() => cleanup(), 480);
+            }, 420);
+        };
+
+        const onKey = (e) => { if (e.key === 'Escape') closeSequence(); };
+        const onBackdropClick = (e) => { if (e.target === backdrop) closeSequence(); };
+        const onDblClick = () => closeSequence();
+
         const onImgReady = () => {
-            const naturalW = animImg.naturalWidth || animImg.width;
-            const naturalH = animImg.naturalHeight || animImg.height;
-            const vw = window.innerWidth; const vh = window.innerHeight;
-            const targetWidth = originRect ? originRect.width : Math.min(600, vw * 0.6);
-            const targetHeight = originRect ? originRect.height : Math.min(400, vh * 0.6);
-            const targetLeft = (vw - targetWidth) / 2;
-            const targetTop = (vh - targetHeight) / 2;
+            naturalW = animImg.naturalWidth || animImg.width || 600;
+            naturalH = animImg.naturalHeight || animImg.height || 400;
+            vw = window.innerWidth; vh = window.innerHeight;
+
+            // initial target (centered modest size) before expansion
+            targetWidth = originRect ? originRect.width : Math.min(600, Math.round(vw * 0.6));
+            targetHeight = originRect ? originRect.height : Math.min(400, Math.round(vh * 0.6));
+            targetLeft = Math.round((vw - targetWidth) / 2);
+            targetTop = Math.round((vh - targetHeight) / 2);
+
+            // move to centered target first
             requestAnimationFrame(() => {
                 animImg.style.left = targetLeft + 'px';
                 animImg.style.top = targetTop + 'px';
@@ -436,8 +489,10 @@ document.addEventListener('DOMContentLoaded', () => {
                 animImg.style.height = targetHeight + 'px';
                 animImg.classList.add('centered');
             });
+
             const doExpand = () => {
-                const maxScale = Math.min(vw / naturalW, vh / naturalH);
+                vw = window.innerWidth; vh = window.innerHeight;
+                const maxScale = Math.min(vw / naturalW, vh / naturalH, 1);
                 const expandWidth = Math.round(naturalW * maxScale);
                 const expandHeight = Math.round(naturalH * maxScale);
                 const expandLeft = Math.round((vw - expandWidth) / 2);
@@ -451,37 +506,15 @@ document.addEventListener('DOMContentLoaded', () => {
                     animImg.style.height = expandHeight + 'px';
                 });
             };
-            const expandTimeout = setTimeout(() => doExpand(), 700);
-            function cleanup() {
-                clearTimeout(expandTimeout);
-                animImg.remove();
-                backdrop.remove();
-                document.removeEventListener('keydown', onKey);
-            }
-            function closeSequence() {
-                const centeredLeft = (vw - targetWidth) / 2;
-                const centeredTop = (vh - targetHeight) / 2;
-                animImg.classList.remove('expanded');
-                animImg.style.left = centeredLeft + 'px';
-                animImg.style.top = centeredTop + 'px';
-                animImg.style.width = targetWidth + 'px';
-                animImg.style.height = targetHeight + 'px';
-                backdrop.classList.remove('dimmed');
-                setTimeout(() => {
-                    if (originRect) {
-                        animImg.style.left = originRect.left + 'px';
-                        animImg.style.top = originRect.top + 'px';
-                        animImg.style.width = originRect.width + 'px';
-                        animImg.style.height = originRect.height + 'px';
-                    }
-                    setTimeout(() => cleanup(), 480);
-                }, 420);
-            }
-            const onKey = (e) => { if (e.key === 'Escape') closeSequence(); };
+
+            expandTimeout = setTimeout(doExpand, 700);
+
+            // wire up listeners
             document.addEventListener('keydown', onKey);
-            backdrop.addEventListener('click', (e) => {
-                if (e.target === backdrop) closeSequence();
-            });
+            backdrop.addEventListener('click', onBackdropClick);
+            animImg.addEventListener('dblclick', onDblClick);
+
+            // close button
             const closeBtn = document.createElement('button');
             closeBtn.className = 'work-image-close';
             closeBtn.type = 'button';
@@ -489,54 +522,30 @@ document.addEventListener('DOMContentLoaded', () => {
             closeBtn.setAttribute('aria-label', 'Close image');
             backdrop.appendChild(closeBtn);
             closeBtn.addEventListener('click', closeSequence);
-            animImg.addEventListener('dblclick', closeSequence);
         };
+
+        // start
         if (animImg.complete && animImg.naturalWidth) {
             onImgReady();
         } else {
             animImg.onload = onImgReady;
+            // safety: if image doesn't load quickly, still proceed
             setTimeout(() => { if (!animImg.naturalWidth) onImgReady(); }, 800);
         }
-        function cleanup() {
-            clearTimeout(expandTimeout);
-            animImg.remove();
-            backdrop.remove();
-            document.removeEventListener('keydown', onKey);
-        }
-        function closeSequence() {
-            const origin = originRect;
-            const centeredLeft = (vw - targetWidth) / 2;
-            const centeredTop = (vh - targetHeight) / 2;
-            animImg.classList.remove('expanded');
-            animImg.style.left = centeredLeft + 'px';
-            animImg.style.top = centeredTop + 'px';
-            animImg.style.width = targetWidth + 'px';
-            animImg.style.height = targetHeight + 'px';
-            backdrop.classList.remove('dimmed');
-            setTimeout(() => {
-                if (origin) {
-                    animImg.style.left = origin.left + 'px';
-                    animImg.style.top = origin.top + 'px';
-                    animImg.style.width = origin.width + 'px';
-                    animImg.style.height = origin.height + 'px';
-                }
-                setTimeout(() => cleanup(), 480);
-            }, 420);
-        }
-        const onKey = (e) => { if (e.key === 'Escape') closeSequence(); };
-        document.addEventListener('keydown', onKey);
-        backdrop.addEventListener('click', (e) => {
-            if (e.target === backdrop) closeSequence();
-        });
-        animImg.addEventListener('dblclick', closeSequence);
     }
 
     document.querySelectorAll('.card.work').forEach(card => {
         card.style.cursor = 'pointer';
         card.addEventListener('click', (e) => {
+            // If this card is intentionally configured as a plain Three.js card (no-hover-overlay),
+            // skip the image overlay behavior entirely.
+            if (card.classList.contains('no-hover-overlay')) return;
+
             // if card has data-href, open it in a new tab
             const href = card.getAttribute('data-href');
-            const overlaySrc = card.getAttribute('data-overlay-src');
+            let overlaySrc = card.getAttribute('data-overlay-src');
+            const imgEl = card.querySelector('img');
+
             if (href) {
                 // respect modifier keys
                 if (e.metaKey || e.ctrlKey) {
@@ -547,8 +556,21 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
                 return;
             }
+
+            // Fallback: if no explicit overlay src, use the card image src so clicking the card still opens the overlay
+            if (!overlaySrc && imgEl) {
+                overlaySrc = imgEl.getAttribute('src') || imgEl.src;
+            }
+
             if (overlaySrc) {
-                createImageOverlay(overlaySrc, card.querySelector('h3') ? card.querySelector('h3').textContent : '');
+                const titleEl = card.querySelector('h3');
+                const altText = titleEl ? titleEl.textContent : (imgEl ? imgEl.alt : '');
+                try {
+                    console.debug('[work-click] overlaySrc:', overlaySrc, 'imgEl:', imgEl, 'alt:', altText);
+                    createImageOverlay(overlaySrc, altText, imgEl);
+                } catch (err) {
+                    console.error('[work-click] createImageOverlay error:', err);
+                }
             }
         });
     });

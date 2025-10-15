@@ -83,6 +83,21 @@ body {
     transform: translateY(-2px);
 }
 
+/* Floating year animation for upcoming work card */
+.work-upcoming .year-animate {
+    display: inline-block;
+    transform-origin: center bottom;
+    transition: transform 420ms cubic-bezier(0.2, 0.9, 0.2, 1), opacity 320ms ease, color 300ms ease;
+}
+.work-upcoming:hover .year-animate {
+    transform: translateY(-8px) rotate(-2deg) scale(1.02);
+    opacity: 1;
+    color: rgba(255,255,255,0.9);
+}
+.work-upcoming { /* ensure subtle lift on hover like other cards */
+    transition: transform 420ms cubic-bezier(0.2, 0.9, 0.2, 1), background 320ms ease;
+}
+
 /* Disable hover effects for Three.js service cards */
 .threejs-service:hover {
     background: var(--card);
@@ -177,6 +192,29 @@ body {
 .btn-primary:hover, .btn-cta:hover {
     transform: translateY(-2px);
     box-shadow: 0 8px 24px rgba(255, 255, 255, 0.2);
+}
+
+/* Profile CTA overlay */
+.profile-cta { position: relative; overflow: hidden; }
+.profile-cta img { display: block; width: 100%; height: 100%; object-fit: cover; }
+.resume-overlay { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; pointer-events: none; }
+.resume-overlay::before { content: ''; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(0,0,0,0.0), rgba(0,0,0,0.28)); opacity: 0; transition: opacity 220ms ease; }
+.profile-cta:hover .resume-overlay::before { opacity: 1; }
+.resume-btn { pointer-events: auto; display:inline-flex; gap:0.5rem; align-items:center; background: rgba(255,255,255,0.04); color: var(--text); border: 1px solid rgba(255,255,255,0.06); padding: 0.5rem 0.75rem; border-radius: 999px; font-weight:600; font-size:0.9rem; text-decoration:none; opacity:0; transform: translateY(6px); transition: transform 220ms cubic-bezier(0.2,0.9,0.2,1), opacity 220ms ease, box-shadow 220ms ease;}
+.profile-cta:hover .resume-btn { opacity:1; transform:none; box-shadow: 0 6px 18px rgba(0,0,0,0.6); }
+.resume-btn svg { width: 14px; height: 14px; stroke: currentColor; }
+
+/* Blur effect for profile image on hover to emphasize CTA */
+.profile-cta img {
+    transition: filter 260ms cubic-bezier(0.2,0.9,0.2,1), transform 260ms cubic-bezier(0.2,0.9,0.2,1);
+}
+.profile-cta:hover img {
+    filter: blur(8px) saturate(0.9) contrast(0.9);
+    transform: scale(1.035);
+}
+.profile-cta:hover .resume-overlay::before {
+    /* make overlay darker when image is blurred */
+    background: linear-gradient(180deg, rgba(0,0,0,0.18), rgba(0,0,0,0.6));
 }
 
 /* Profile Card */
@@ -361,6 +399,13 @@ body {
 .work:hover .work-overlay {
     transform: translateY(0);
     opacity: 1;
+}
+
+/* suppress overlay for specific large card variant */
+.no-hover-overlay .work-overlay {
+    transform: none !important;
+    opacity: 0 !important;
+    pointer-events: none;
 }
 
 /* Media wrapper to add black padding around GIFs and avoid corner cropping */
@@ -605,6 +650,17 @@ body {
 
 #development-canvas,
 #uiux-canvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+}
+
+#upcoming-canvas,
+#kingrajasthan-canvas,
+#work-threejs-canvas {
     position: absolute;
     top: 0;
     left: 0;
