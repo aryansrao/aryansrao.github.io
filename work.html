@@ -668,9 +668,8 @@
     </script>
 </head>
 <body>
-    <!-- Accessibility: Skip to main content -->
-    <a href="#main-content" class="sr-only">Skip to main content</a>
-    
+    <!-- Removed unused skip link: page content already provides a main landmark via #main-content -->
+
     <div class="work-page-container">
         <a href="/" class="back-link" aria-label="Back to home">
             <span class="back-icon" aria-hidden="true">
@@ -682,7 +681,7 @@
             <span class="back-label">Back</span>
         </a>
         
-        <div class="bento-grid" id="main-content">
+    <div class="bento-grid" id="main-content" role="main">
             <!-- Hero Card -->
             <div class="card work-hero">
                 <h1>Work & Projects</h1>
