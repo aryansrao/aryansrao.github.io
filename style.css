@@ -1423,6 +1423,49 @@ body {
     position: relative;
 }
 
+/* Suppress the white hover glow and any hover transform for the small
+   client three.js accent card (uses class .accent-box). The larger
+   canvas-based cards use .threejs-service and remain unaffected. */
+.accent-box,
+.accent-box:hover {
+    transform: none !important;
+}
+
+.accent-box::before,
+.accent-box:hover::before {
+    opacity: 0 !important;
+    pointer-events: none !important; 
+}
+
+/* Remove the subtle gradient/border that was adding a light gray overlay
+   on the small client three.js card so the canvas visuals show cleanly. */
+.accent-box,
+.accent-box:hover {
+    background: transparent !important;
+    border-color: transparent !important;
+    box-shadow: none !important;
+}
+
+/* Strong reset for any residual visual effects inside the accent box.
+   This ensures no background, gradient, filter, shadow or blend mode
+   from parent/global rules affects the small three.js canvas card. */
+.accent-box,
+.accent-box * {
+    background: transparent !important;
+    background-image: none !important;
+    border: 0 !important;
+    border-color: transparent !important;
+    box-shadow: none !important;
+    filter: none !important;
+    mix-blend-mode: normal !important;
+}
+
+.accent-box canvas,
+.accent-box > canvas {
+    background: transparent !important;
+    display: block !important;
+}
+
 #threejs-canvas {
     width: 100%;
     height: 100%;
