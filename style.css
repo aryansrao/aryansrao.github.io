@@ -681,6 +681,8 @@ body {
     flex-direction: column;
     justify-content: center;
     cursor: pointer;
+    position: relative;
+    overflow: hidden;
 }
 
 .service-icon {

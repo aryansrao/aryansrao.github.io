@@ -616,31 +616,45 @@ document.addEventListener('DOMContentLoaded', () => {
             let overlaySrc = card.getAttribute('data-overlay-src');
             const imgEl = card.querySelector('img');
 
-            if (href) {
-                // respect modifier keys
-                if (e.metaKey || e.ctrlKey) {
-                    window.open(href, '_blank');
-                } else {
-                    // open in same tab
-                    window.open(href, '_blank', 'noopener');
+            // Wrap the actual navigation/overlay work so we can delay it slightly
+            // and allow the ripple animation to be visible before any high z-index
+            // overlay is appended to the document.
+            const performAction = () => {
+                if (href) {
+                    // respect modifier keys
+                    if (e.metaKey || e.ctrlKey) {
+                        window.open(href, '_blank');
+                    } else {
+                        // open in same tab (but use noopener for safety)
+                        window.open(href, '_blank', 'noopener');
+                    }
+                    return;
                 }
-                return;
-            }
 
-            // Fallback: if no explicit overlay src, use the card image src so clicking the card still opens the overlay
-            if (!overlaySrc && imgEl) {
-                overlaySrc = imgEl.getAttribute('src') || imgEl.src;
-            }
-
-            if (overlaySrc) {
-                const titleEl = card.querySelector('h3');
-                const altText = titleEl ? titleEl.textContent : (imgEl ? imgEl.alt : '');
-                try {
-                    console.debug('[work-click] overlaySrc:', overlaySrc, 'imgEl:', imgEl, 'alt:', altText);
-                    createImageOverlay(overlaySrc, altText, imgEl);
-                } catch (err) {
-                    console.error('[work-click] createImageOverlay error:', err);
+                // Fallback: if no explicit overlay src, use the card image src so clicking the card still opens the overlay
+                if (!overlaySrc && imgEl) {
+                    overlaySrc = imgEl.getAttribute('src') || imgEl.src;
                 }
+
+                if (overlaySrc) {
+                    const titleEl = card.querySelector('h3');
+                    const altText = titleEl ? titleEl.textContent : (imgEl ? imgEl.alt : '');
+                    try {
+                        console.debug('[work-click] overlaySrc:', overlaySrc, 'imgEl:', imgEl, 'alt:', altText);
+                        createImageOverlay(overlaySrc, altText, imgEl);
+                    } catch (err) {
+                        console.error('[work-click] createImageOverlay error:', err);
+                    }
+                }
+            };
+
+            // If user used a modifier key to open in a new tab, perform immediately.
+            // Otherwise delay a short moment so the ripple (which is appended by the
+            // general ripple handler) can be seen before overlays (z-index 1200+) cover it.
+            if (href && (e.metaKey || e.ctrlKey)) {
+                performAction();
+            } else {
+                setTimeout(performAction, 120);
             }
         });
     });
