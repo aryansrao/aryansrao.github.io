@@ -765,6 +765,17 @@
             .portfolio-cta-title span:not(:last-child)::after {
                 content: " ";
             }
+
+            /* Make the 'Click to open' indicator and arrow always visible on touch devices
+               since hover doesn't exist — ensures users see the affordance to open Buy Me a Coffee */
+            .coffee-card::after {
+                opacity: 1 !important;
+            }
+
+            .coffee-arrow {
+                opacity: 1 !important;
+                transform: none !important;
+            }
         }
 
         @media (max-width: 480px) {
