@@ -1580,25 +1580,13 @@ body {
     }
     
     /* Mobile card order: Experience cards → Luveian → King Rajasthan → Shyam Kemicals → Nex */
-    .service {
-        order: 1;
-    }
-    
-    .work-luveian {
-        order: 2;
-    }
-    
-    .work-king-rajasthan {
-        order: 3;
-    }
-    
-    .work-shyam-kemicals {
-        order: 4;
-    }
-    
-    .work-nex {
-        order: 5;
-    }
+    .service { order: 1; }
+    .work-luveian { order: 2; }
+    .work-king-rajasthan { order: 3; }
+    .work-shyam-kemicals { order: 4; }
+    .work-nex { order: 5; }
+    .tools { order: 6; }
+
     
     /* Adjust specific card heights */
     .work, .service {
