@@ -1,0 +1,1263 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Support — Aryan S Rao</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        :root {
+            --bg: #000000;
+            --card: #0a0a0a;
+            --card-hover: #111111;
+            --text: #ffffff;
+            --text-secondary: #888888;
+            --accent: #ffffff;
+            --border: #1a1a1a;
+            --glow: rgba(255, 255, 255, 0.1);
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+            padding: 2rem;
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(6, 1fr);
+            gap: 1rem;
+            grid-auto-rows: 200px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .card {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 2rem;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+            opacity: 0;
+            transform: translateY(40px);
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(circle at var(--mouse-x, 50%) var(--mouse-y, 50%), var(--glow) 0%, transparent 50%);
+            opacity: 0;
+            transition: opacity 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+            pointer-events: none;
+        }
+
+        .card:hover::before {
+            opacity: 1;
+        }
+
+        .card:hover {
+            background: var(--card-hover);
+            border-color: #222222;
+            transform: translateY(-2px);
+        }
+
+        .card.loaded {
+            opacity: 1;
+            transform: translateY(0);
+            transition: opacity 0.8s cubic-bezier(0.4, 0, 0.2, 1), 
+                        transform 0.8s cubic-bezier(0.4, 0, 0.2, 1),
+                        background 0.6s cubic-bezier(0.4, 0, 0.2, 1),
+                        border-color 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        /* Hero Card */
+        .hero {
+            grid-column: span 4;
+            grid-row: span 2;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .hero h1 {
+            font-size: 4rem;
+            font-weight: 300;
+            line-height: 1.1;
+            letter-spacing: -0.03em;
+            margin-bottom: 1rem;
+        }
+
+        .hero-subtitle {
+            font-size: 1.125rem;
+            color: var(--text-secondary);
+            font-weight: 400;
+            max-width: 500px;
+        }
+
+        /* Profile Card */
+        .profile {
+            grid-column: span 2;
+            grid-row: span 2;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            gap: 1rem;
+        }
+
+        .profile-avatar {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            overflow: hidden;
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            margin-bottom: 0.5rem;
+        }
+
+        .profile-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .profile-name {
+            font-size: 1.5rem;
+            font-weight: 600;
+            letter-spacing: -0.02em;
+        }
+
+        .profile-role {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        /* International Support Card */
+        .coffee-card {
+            grid-column: span 3;
+            grid-row: span 1;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            cursor: pointer;
+            position: relative;
+        }
+
+        .coffee-card::after {
+            content: 'Click to open';
+            position: absolute;
+            top: 0.75rem;
+            right: 0.75rem;
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .coffee-card:hover::after {
+            opacity: 1;
+        }
+
+        .coffee-content {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .coffee-icon {
+            font-size: 2rem;
+        }
+
+        .coffee-text h4 {
+            font-size: 1.125rem;
+            font-weight: 500;
+            margin-bottom: 0.25rem;
+        }
+
+        .coffee-text p {
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+        }
+
+        .coffee-arrow {
+            font-size: 1.5rem;
+            opacity: 0.5;
+            transition: all 0.3s ease;
+        }
+
+        .coffee-card:hover .coffee-arrow {
+            opacity: 1;
+            transform: translateX(4px);
+        }
+
+        /* Indian Payment Card */
+        .indian-payment-card {
+            grid-column: span 3;
+            grid-row: span 1;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .indian-payment-content {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .payment-icon {
+            font-size: 2rem;
+        }
+
+        .indian-payment-text h4 {
+            font-size: 1.125rem;
+            font-weight: 500;
+            margin-bottom: 0.25rem;
+        }
+
+        .indian-payment-text p {
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+        }
+
+        .arrow-down {
+            font-size: 1.5rem;
+            opacity: 0.5;
+            transition: all 0.3s ease;
+        }
+
+        .indian-payment-card:hover .arrow-down {
+            opacity: 1;
+            transform: translateY(4px);
+        }
+
+        /* Three.js Card */
+        .threejs-card {
+            grid-column: span 3;
+            grid-row: span 2;
+            padding: 0;
+            position: relative;
+        }
+
+        .threejs-card:hover {
+            background: var(--card);
+            border-color: var(--border);
+            transform: none;
+        }
+
+        .threejs-card:hover::before {
+            opacity: 0;
+        }
+
+        #support-canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+        }
+
+        .threejs-content {
+            position: relative;
+            z-index: 2;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            height: 100%;
+            padding: 2rem;
+            background: linear-gradient(to top, rgba(10, 10, 10, 0.95) 0%, rgba(10, 10, 10, 0.5) 50%, transparent 100%);
+        }
+
+        .threejs-content h4 {
+            font-size: 1.125rem;
+            font-weight: 500;
+            margin-bottom: 0.75rem;
+        }
+
+        .threejs-content p {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            line-height: 1.6;
+        }
+
+        /* Small Three.js Card */
+        .accent-box {
+            grid-column: span 1;
+            grid-row: span 1;
+            padding: 0;
+            position: relative;
+        }
+
+        .accent-box:hover {
+            background: var(--card);
+            border-color: var(--border);
+            transform: none;
+        }
+
+        .accent-box:hover::before {
+            opacity: 0;
+        }
+
+        #small-threejs-canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            border-radius: 16px;
+        }
+
+        /* Tip Selection Card */
+        .tip-card {
+            grid-column: span 4;
+            grid-row: span 3;
+        }
+
+        .card-title {
+            font-size: 1rem;
+            font-weight: 500;
+            margin-bottom: 1.5rem;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+        }
+
+        .tip-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 0.75rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .tip-option {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 1.5rem;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .tip-option::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: rgba(255, 255, 255, 0.05);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .tip-option:hover::before {
+            opacity: 1;
+        }
+
+        .tip-option:hover {
+            border-color: #333333;
+            transform: translateY(-2px);
+        }
+
+        .tip-option.selected {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: var(--accent);
+        }
+
+        .tip-amount {
+            font-size: 2rem;
+            font-weight: 300;
+            letter-spacing: -0.02em;
+        }
+
+        .custom-input-wrapper {
+            margin-bottom: 1.5rem;
+        }
+
+        .custom-input {
+            width: 100%;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 1rem 1.5rem;
+            color: var(--text);
+            font-size: 1rem;
+            font-weight: 400;
+            transition: all 0.3s ease;
+        }
+
+        .custom-input:focus {
+            outline: none;
+            border-color: #333333;
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .custom-input::placeholder {
+            color: var(--text-secondary);
+        }
+
+        .btn-primary {
+            background: var(--accent);
+            color: var(--bg);
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 8px;
+            font-size: 0.95rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            width: 100%;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-primary::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(45deg, transparent, rgba(0, 0, 0, 0.1), transparent);
+            transform: translateX(-100%);
+            transition: transform 0.6s;
+        }
+
+        .btn-primary:hover::before {
+            transform: translateX(100%);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(255, 255, 255, 0.2);
+        }
+
+        /* QR Code Display */
+        .qr-display {
+            grid-column: span 2;
+            grid-row: span 3;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+        }
+
+        .qr-code-wrapper {
+            background: white;
+            padding: 1rem;
+            border-radius: 12px;
+            margin: 1.5rem 0;
+        }
+
+        .qr-info {
+            margin-top: 1rem;
+        }
+
+        .qr-info p {
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .qr-info strong {
+            color: var(--text);
+        }
+
+        .copy-btn {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border);
+            color: var(--text);
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            font-size: 0.875rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 1rem;
+        }
+
+        .copy-btn:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: #333333;
+        }
+
+        /* Thank You Card */
+        .thanks-card {
+            grid-column: span 4;
+            grid-row: span 1;
+            text-align: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .thanks-card h2 {
+            font-size: 2rem;
+            font-weight: 300;
+            letter-spacing: -0.02em;
+        }
+
+        /* Contact Card */
+        .contact-card {
+            grid-column: 1 / span 3;
+            grid-row: span 1;
+        }
+
+        .contact-title {
+            font-size: 1rem;
+            font-weight: 500;
+            margin-bottom: 1rem;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+        }
+
+        .contact-methods {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+        }
+
+        .contact-method {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            padding: 1rem;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            color: var(--text);
+            text-decoration: none;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .contact-method svg {
+            width: 24px;
+            height: 24px;
+        }
+
+        .contact-method span {
+            font-size: 0.875rem;
+            font-weight: 500;
+        }
+
+        .contact-method:hover {
+            background: rgba(255, 255, 255, 0.05);
+            border-color: #333333;
+            transform: translateY(-2px);
+        }
+
+        .portfolio-cta {
+            grid-column: span 2;
+            grid-row: span 2;
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            cursor: pointer;
+            position: relative;
+        }
+
+            .portfolio-cta-inner {
+                text-align: left;
+                padding: 1.5rem;
+            }
+
+            .portfolio-cta-title {
+                font-size: 4rem;
+                font-weight: 700;
+                line-height: 1.02;
+                letter-spacing: -0.01em;
+                margin: 0;
+                text-align: left;
+            }
+
+            .portfolio-cta-title span {
+                display: block;
+                font-size: 4rem;
+                line-height: 1.02;
+            }
+
+            .portfolio-cta-title .cta-muted {
+                color: var(--text-secondary);
+                font-weight: 700;
+                transition: letter-spacing 0.9s cubic-bezier(0.25, 0.1, 0.25, 1), 
+                            transform 0.9s cubic-bezier(0.25, 0.1, 0.25, 1);
+            }
+
+            .portfolio-cta:hover .portfolio-cta-title .cta-muted,
+            .portfolio-cta:focus .portfolio-cta-title .cta-muted {
+                letter-spacing: 0.08em;
+                transform: scale(1.01);
+            }
+
+        @media (max-width: 768px) {
+            .portfolio-cta {
+                aspect-ratio: 1 / 1;
+                min-height: 120px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                order: 999;
+                margin-top: 1rem;
+            }
+
+            .portfolio-cta-inner {
+                text-align: center;
+                padding: 0.5rem;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                height: 100%;
+            }
+
+            .portfolio-cta-title {
+                font-size: 3.2rem;
+                line-height: 1;
+            }
+
+            .portfolio-cta-title span {
+                font-size: 3.2rem;
+                display: block;
+            }
+
+        }
+
+        /* Responsive Design */
+        @media (max-width: 1024px) {
+            .container {
+                grid-template-columns: repeat(4, 1fr);
+            }
+
+            .hero {
+                grid-column: span 3;
+            }
+
+            .profile {
+                grid-column: span 1;
+            }
+
+            .coffee-card {
+                grid-column: span 2;
+            }
+
+            .indian-payment-card {
+                grid-column: span 2;
+            }
+
+            .threejs-card {
+                grid-column: span 2;
+            }
+
+            .tip-card {
+                grid-column: span 4;
+            }
+
+            .qr-display {
+                grid-column: span 4;
+            }
+
+            .thanks-card {
+                grid-column: span 2;
+            }
+
+            .portfolio-cta {
+                grid-column: span 2;
+                grid-row: span 2;
+            }
+        }
+
+        @media (max-width: 768px) {
+            body {
+                padding: 1rem;
+            }
+
+            .container {
+                grid-template-columns: 1fr;
+                gap: 0.75rem;
+                grid-auto-rows: auto;
+            }
+
+            .hero, .profile, .coffee-card, .indian-payment-card, .threejs-card,
+            .tip-card, .qr-display, .thanks-card, .contact-card, .accent-box, .portfolio-cta {
+                grid-column: span 1;
+                grid-row: auto;
+                min-height: auto;
+            }
+
+            .hero {
+                padding: 2rem 1.5rem;
+                min-height: 300px;
+            }
+
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+
+            .threejs-card {
+                min-height: 300px;
+            }
+
+            .accent-box {
+                min-height: 200px;
+            }
+
+            .tip-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .thanks-card h2 {
+                font-size: 1.5rem;
+            }
+
+            .portfolio-cta {
+                aspect-ratio: 1 / 1;
+                min-height: auto;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                order: 999;
+                margin-top: 1rem;
+            }
+
+            .portfolio-cta-inner {
+                text-align: center;
+                padding: 1rem;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                height: 100%;
+            }
+
+            .portfolio-cta-title {
+                font-size: 1.2rem;
+                line-height: 1.2;
+            }
+
+            .portfolio-cta-title span {
+                font-size: 0.85rem;
+                display: inline;
+            }
+
+            .portfolio-cta-title span:not(:last-child)::after {
+                content: " ";
+            }
+        }
+
+        @media (max-width: 480px) {
+            .tip-grid {
+                grid-template-columns: 1fr;
+            }
+            .portfolio-cta-title {
+                font-size: 3rem;
+            }
+        }
+        @media (min-width: 1025px) {
+            .portfolio-cta-title,
+            .portfolio-cta-title span {
+                font-size: 4rem !important;
+                line-height: 1.02 !important;
+            }
+        }
+
+        @media (max-width: 1024px) {
+            .portfolio-cta-title,
+            .portfolio-cta-title span {
+                font-size: 3.2rem !important;
+                line-height: 1.02 !important;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .portfolio-cta-title,
+            .portfolio-cta-title span {
+                font-size: 3rem !important;
+                line-height: 1.02 !important;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Hero Card -->
+        <div class="card hero">
+            <h1>Support My Work</h1>
+            <p class="hero-subtitle">Your contribution helps me build better software, maintain open-source projects, and create more resources for the developer community.</p>
+        </div>
+
+        <!-- Profile Card -->
+        <div class="card profile">
+            <div class="profile-avatar">
+                <img src="https://media.licdn.com/dms/image/v2/D4D03AQG06Uzg9sQFfA/profile-displayphoto-shrink_400_400/B4DZeLrmhpG8Ak-/0/1750395153594?e=1763596800&v=beta&t=RF3BqXMs4_95akCdSR0M825uOBlgL7RwGwJHbKe03yY" alt="Aryan S Rao">
+            </div>
+            <h2 class="profile-name">Aryan S Rao</h2>
+            <p class="profile-role">Full Stack Developer</p>
+        </div>
+
+        <!-- International Support -->
+        <div class="card coffee-card" onclick="window.open('https://buymeacoffee.com/aryansrao', '_blank')">
+            <div class="coffee-content">
+                <div class="coffee-icon">☕</div>
+                <div class="coffee-text">
+                    <h4>Buy Me a Coffee</h4>
+                    <p>For international payments</p>
+                </div>
+            </div>
+            <div class="coffee-arrow">→</div>
+        </div>
+
+        <!-- Three.js Interactive Card -->
+        <div class="card threejs-card">
+            <canvas id="support-canvas"></canvas>
+            <div class="threejs-content">
+                <h4>Why Support?</h4>
+                <p>Build open-source tools • Create educational content • Maintain projects • Share knowledge freely</p>
+            </div>
+        </div>
+
+        <!-- Indian Payment Methods -->
+        <div class="card indian-payment-card">
+            <div class="indian-payment-content">
+                <div class="payment-icon">🇮🇳</div>
+                <div class="indian-payment-text">
+                    <h4>For Indian Users</h4>
+                    <p>GPay, Paytm, UPI transactions</p>
+                </div>
+            </div>
+            <div class="arrow-down">↓</div>
+        </div>
+
+        <!-- Tip Selection Card -->
+        <div class="card tip-card">
+            <h4 class="card-title">Choose Amount (UPI)</h4>
+            <div class="tip-grid">
+                <div class="tip-option" data-amount="50">
+                    <div class="tip-amount">₹50</div>
+                </div>
+                <div class="tip-option" data-amount="100">
+                    <div class="tip-amount">₹100</div>
+                </div>
+                <div class="tip-option" data-amount="200">
+                    <div class="tip-amount">₹200</div>
+                </div>
+                <div class="tip-option" data-amount="500">
+                    <div class="tip-amount">₹500</div>
+                </div>
+                <div class="tip-option" data-amount="1000">
+                    <div class="tip-amount">₹1000</div>
+                </div>
+                <div class="tip-option" data-amount="2000">
+                    <div class="tip-amount">₹2000</div>
+                </div>
+            </div>
+            <div class="custom-input-wrapper">
+                <input type="number" class="custom-input" id="customAmount" placeholder="Or enter custom amount">
+            </div>
+        </div>
+
+        <!-- QR Code Display (Always Visible) -->
+        <div class="card qr-display">
+            <h4 class="card-title">Scan to Pay</h4>
+            <div class="qr-code-wrapper" id="qrcode"></div>
+            <div class="qr-info">
+                <p><strong>UPI ID:</strong> aaryansrao5@okhdfcbank</p>
+                <p id="amountDisplay" style="display: none;"><strong>Amount:</strong> ₹<span id="displayAmount">0</span></p>
+            </div>
+            <button class="copy-btn" id="copyUPI">Copy UPI ID</button>
+        </div>
+
+        <!-- Thank You -->
+        <div class="card thanks-card">
+            <h2>Thank you for your support </h2>
+        </div>
+
+        <div class="card portfolio-cta" role="link" tabindex="0">
+            <div class="portfolio-cta-inner">
+                <h3 class="portfolio-cta-title">
+                    <span>Now,</span>
+                    <span>check my</span>
+                    <span class="cta-muted">portfolio.</span>
+                </h3>
+            </div>
+        </div>
+
+        <!-- Contact Card -->
+        <div class="card contact-card">
+            <h4 class="contact-title">Get in Touch</h4>
+            <div class="contact-methods">
+                <a href="mailto:aaryansrao5@gmail.com" class="contact-method">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+                        <polyline points="22,6 12,13 2,6"/>
+                    </svg>
+                    <span>Email</span>
+                </a>
+                <a href="https://calendly.com/aryansrao" target="_blank" class="contact-method">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
+                        <line x1="16" y1="2" x2="16" y2="6"/>
+                        <line x1="8" y1="2" x2="8" y2="6"/>
+                        <line x1="3" y1="10" x2="21" y2="10"/>
+                    </svg>
+                    <span>Schedule</span>
+                </a>
+            </div>
+        </div>
+
+        <!-- Small Three.js Card -->
+        <div class="card accent-box">
+            <canvas id="small-threejs-canvas"></canvas>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+    <script>
+        // Three.js Scene for Why Support Card
+        function initSupportScene() {
+            const canvas = document.getElementById('support-canvas');
+            if (!canvas) return;
+
+            const container = canvas.parentElement;
+            const width = container.clientWidth;
+            const height = container.clientHeight;
+
+            const scene = new THREE.Scene();
+            const camera = new THREE.PerspectiveCamera(50, width / height, 0.1, 1000);
+            camera.position.z = 5;
+
+            const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true });
+            renderer.setSize(width, height);
+            renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+
+            // Create floating geometric shapes
+            const shapes = [];
+            
+            // Icosahedron
+            const geo1 = new THREE.IcosahedronGeometry(0.8, 0);
+            const mat1 = new THREE.MeshBasicMaterial({ color: 0xffffff, wireframe: true, opacity: 0.6, transparent: true });
+            const mesh1 = new THREE.Mesh(geo1, mat1);
+            mesh1.position.set(-1.5, 0.5, 0);
+            scene.add(mesh1);
+            shapes.push(mesh1);
+
+            // Octahedron
+            const geo2 = new THREE.OctahedronGeometry(0.6, 0);
+            const mat2 = new THREE.MeshBasicMaterial({ color: 0xffffff, wireframe: true, opacity: 0.7, transparent: true });
+            const mesh2 = new THREE.Mesh(geo2, mat2);
+            mesh2.position.set(1.5, -0.5, -1);
+            scene.add(mesh2);
+            shapes.push(mesh2);
+
+            // Particles
+            const particlesGeo = new THREE.BufferGeometry();
+            const particlesCount = 100;
+            const positions = new Float32Array(particlesCount * 3);
+            for (let i = 0; i < particlesCount * 3; i++) {
+                positions[i] = (Math.random() - 0.5) * 8;
+            }
+            particlesGeo.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+            const particlesMat = new THREE.PointsMaterial({ color: 0xffffff, size: 0.02, transparent: true, opacity: 0.5 });
+            const particles = new THREE.Points(particlesGeo, particlesMat);
+            scene.add(particles);
+
+            let mouseX = 0, mouseY = 0;
+            container.addEventListener('mousemove', (e) => {
+                const rect = container.getBoundingClientRect();
+                mouseX = ((e.clientX - rect.left) / rect.width) * 2 - 1;
+                mouseY = -((e.clientY - rect.top) / rect.height) * 2 + 1;
+            });
+
+            function animate() {
+                requestAnimationFrame(animate);
+                const time = Date.now() * 0.001;
+
+                shapes.forEach((shape, i) => {
+                    shape.rotation.x += 0.003 * (i + 1);
+                    shape.rotation.y += 0.002 * (i + 1);
+                    shape.position.y += Math.sin(time + i) * 0.002;
+                });
+
+                particles.rotation.y += 0.0005;
+                particles.rotation.x += 0.0003;
+
+                camera.position.x += (mouseX * 2 - camera.position.x) * 0.02;
+                camera.position.y += (-mouseY * 2 - camera.position.y) * 0.02;
+                camera.lookAt(scene.position);
+
+                renderer.render(scene, camera);
+            }
+
+            animate();
+
+            const resizeObserver = new ResizeObserver(() => {
+                const w = container.clientWidth;
+                const h = container.clientHeight;
+                camera.aspect = w / h;
+                camera.updateProjectionMatrix();
+                renderer.setSize(w, h);
+            });
+            resizeObserver.observe(container);
+        }
+
+        // Small Three.js Scene with Mouse Hover
+        function initSmallScene() {
+            const canvas = document.getElementById('small-threejs-canvas');
+            if (!canvas) return;
+
+            const container = canvas.parentElement;
+            const width = container.clientWidth;
+            const height = container.clientHeight;
+
+            const scene = new THREE.Scene();
+            const camera = new THREE.PerspectiveCamera(60, width / height, 0.1, 1000);
+            camera.position.z = 3;
+
+            const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true });
+            renderer.setSize(width, height);
+            renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+
+            // Create a spinning torus
+            const torusGeo = new THREE.TorusGeometry(0.8, 0.3, 16, 100);
+            const torusMat = new THREE.MeshBasicMaterial({ 
+                color: 0xffffff, 
+                wireframe: true, 
+                opacity: 0.8, 
+                transparent: true 
+            });
+            const torus = new THREE.Mesh(torusGeo, torusMat);
+            scene.add(torus);
+
+            // Create rotating spheres around torus
+            const spheres = [];
+            for (let i = 0; i < 3; i++) {
+                const sphereGeo = new THREE.SphereGeometry(0.15, 16, 16);
+                const sphereMat = new THREE.MeshBasicMaterial({ 
+                    color: 0xffffff, 
+                    wireframe: true,
+                    opacity: 0.6,
+                    transparent: true
+                });
+                const sphere = new THREE.Mesh(sphereGeo, sphereMat);
+                sphere.position.x = Math.cos((i / 3) * Math.PI * 2) * 1.3;
+                sphere.position.z = Math.sin((i / 3) * Math.PI * 2) * 1.3;
+                scene.add(sphere);
+                spheres.push({ mesh: sphere, offset: (i / 3) * Math.PI * 2 });
+            }
+
+            // Pulsing lines
+            const points = [];
+            for (let i = 0; i < 16; i++) {
+                const angle = (i / 16) * Math.PI * 2;
+                points.push(new THREE.Vector3(Math.cos(angle), Math.sin(angle), 0));
+            }
+            points.push(points[0].clone());
+            const lineGeo = new THREE.BufferGeometry().setFromPoints(points);
+            const lineMat = new THREE.LineBasicMaterial({ color: 0x888888, transparent: true, opacity: 0.4 });
+            const line = new THREE.Line(lineGeo, lineMat);
+            scene.add(line);
+
+            // Mouse hover variables
+            let mouseX = 0, mouseY = 0;
+            let isHovering = false;
+
+            container.addEventListener('mouseenter', () => { isHovering = true; });
+            container.addEventListener('mouseleave', () => { isHovering = false; });
+            
+            document.addEventListener('mousemove', (e) => {
+                const rect = container.getBoundingClientRect();
+                mouseX = ((e.clientX - rect.left) / rect.width) * 2 - 1;
+                mouseY = -((e.clientY - rect.top) / rect.height) * 2 + 1;
+            });
+
+            function animate() {
+                requestAnimationFrame(animate);
+                const time = Date.now() * 0.0005;
+
+                torus.rotation.x += 0.002;
+                torus.rotation.y += 0.003;
+
+                spheres.forEach((sphereObj, i) => {
+                    const newX = Math.cos(sphereObj.offset + time * 2) * 1.3;
+                    const newZ = Math.sin(sphereObj.offset + time * 2) * 1.3;
+                    sphereObj.mesh.position.x = newX;
+                    sphereObj.mesh.position.z = newZ;
+                    sphereObj.mesh.rotation.x += 0.01;
+                    sphereObj.mesh.rotation.y += 0.015;
+                });
+
+                line.rotation.z += 0.005;
+                line.material.opacity = 0.4 + Math.sin(time) * 0.2;
+
+                if (isHovering) {
+                    camera.position.x += (mouseX * 2 - camera.position.x) * 0.03;
+                    camera.position.y += (-mouseY * 2 - camera.position.y) * 0.03;
+                    torus.material.opacity = 1;
+                    spheres.forEach(s => s.mesh.material.opacity = 0.8);
+                } else {
+                    camera.position.x += (0 - camera.position.x) * 0.02;
+                    camera.position.y += (0 - camera.position.y) * 0.02;
+                    torus.material.opacity = 0.8;
+                    spheres.forEach(s => s.mesh.material.opacity = 0.6);
+                }
+
+                camera.lookAt(scene.position);
+                renderer.render(scene, camera);
+            }
+
+            animate();
+
+            const resizeObserver = new ResizeObserver(() => {
+                const w = container.clientWidth;
+                const h = container.clientHeight;
+                camera.aspect = w / h;
+                camera.updateProjectionMatrix();
+                renderer.setSize(w, h);
+            });
+            resizeObserver.observe(container);
+        }
+
+        // Initialize Three.js scenes
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', () => {
+                initSupportScene();
+                initSmallScene();
+            });
+        } else {
+            initSupportScene();
+            initSmallScene();
+        }
+
+        // Card animations on load
+        document.addEventListener('DOMContentLoaded', () => {
+            const cards = document.querySelectorAll('.card');
+            cards.forEach((card, index) => {
+                setTimeout(() => {
+                    card.classList.add('loaded');
+                }, index * 80);
+            });
+
+            // Mouse glow effect
+            cards.forEach(card => {
+                card.addEventListener('mousemove', (e) => {
+                    const rect = card.getBoundingClientRect();
+                    const x = ((e.clientX - rect.left) / rect.width) * 100;
+                    const y = ((e.clientY - rect.top) / rect.height) * 100;
+                    card.style.setProperty('--mouse-x', `${x}%`);
+                    card.style.setProperty('--mouse-y', `${y}%`);
+                });
+            });
+
+            // Initialize QR Code with default (0 amount)
+            const upiUrl = `upi://pay?pa=aaryansrao5@okhdfcbank&pn=Aryans Rao&cu=INR`;
+            new QRCode(document.getElementById('qrcode'), {
+                text: upiUrl,
+                width: 200,
+                height: 200,
+                colorDark: "#000000",
+                colorLight: "#ffffff",
+                correctLevel: QRCode.CorrectLevel.H
+            });
+        });
+
+        // Tip selection logic with auto QR generation
+        let selectedAmount = 0;
+        const tipOptions = document.querySelectorAll('.tip-option');
+        const customInput = document.getElementById('customAmount');
+
+        function generateQRCode(amount) {
+            if (amount <= 0) return;
+
+            document.getElementById('qrcode').innerHTML = '';
+            
+            const upiUrl = `upi://pay?pa=aaryansrao5@okhdfcbank&pn=Aryans Rao&am=${amount}&cu=INR`;
+            
+            new QRCode(document.getElementById('qrcode'), {
+                text: upiUrl,
+                width: 200,
+                height: 200,
+                colorDark: "#000000",
+                colorLight: "#ffffff",
+                correctLevel: QRCode.CorrectLevel.H
+            });
+
+            document.getElementById('displayAmount').textContent = amount;
+            document.getElementById('amountDisplay').style.display = 'block';
+        }
+
+        tipOptions.forEach(option => {
+            option.addEventListener('click', function() {
+                tipOptions.forEach(opt => opt.classList.remove('selected'));
+                this.classList.add('selected');
+                selectedAmount = parseInt(this.dataset.amount);
+                customInput.value = '';
+                
+                // Auto-generate QR code
+                generateQRCode(selectedAmount);
+            });
+        });
+
+        customInput.addEventListener('input', function() {
+            tipOptions.forEach(opt => opt.classList.remove('selected'));
+            selectedAmount = parseInt(this.value) || 0;
+            
+            // Auto-generate QR code when valid amount is entered
+            if (selectedAmount > 0) {
+                generateQRCode(selectedAmount);
+            }
+        });
+
+        // Copy UPI ID
+        document.getElementById('copyUPI').addEventListener('click', function() {
+            navigator.clipboard.writeText('aaryansrao5@okhdfcbank');
+            this.textContent = 'Copied ✓';
+            setTimeout(() => {
+                this.textContent = 'Copy UPI ID';
+            }, 2000);
+        });
+
+        // Portfolio CTA Navigation
+        const portfolioCTA = document.querySelector('.portfolio-cta');
+        if (portfolioCTA) {
+            const portfolioUrl = '/';
+            const navigateToPortfolio = (e) => {
+                if (e.metaKey || e.ctrlKey || e.shiftKey) return;
+                window.location.href = portfolioUrl;
+            };
+
+            portfolioCTA.setAttribute('role', 'link');
+            portfolioCTA.setAttribute('aria-label', 'Open portfolio in a new tab');
+
+            portfolioCTA.addEventListener('click', navigateToPortfolio);
+            portfolioCTA.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    navigateToPortfolio(e);
+                }
+            });
+        }
+    </script>
+</body>
+</html>
