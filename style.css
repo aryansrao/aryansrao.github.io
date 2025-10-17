@@ -1496,364 +1496,11 @@ body {
     line-height: 1.4;
     max-width: 100px;
 }
-/* ====================================================================
-   RESPONSIVE DESIGN - IMPROVED MOBILE-FIRST APPROACH
-   ==================================================================== */
 
-/* Extra Small Mobile: 0px - 374px */
-@media (max-width: 374px) {
-    body {
-        padding: 0.5rem;
-    }
-    
-    .container {
-        grid-template-columns: 1fr;
-        gap: 0.625rem;
-        grid-auto-rows: 140px;
-    }
-    
-    .card {
-        padding: 1rem;
-        border-radius: 10px;
-    }
-    
-    /* Hero */
-    .hero {
-        grid-column: span 1;
-        grid-row: span 4;
-        padding: 1.25rem;
-    }
-    
-    .hero h1 {
-        font-size: 1.625rem;
-        line-height: 1.2;
-        margin-bottom: 0.875rem;
-    }
-    
-    .hero-subtitle {
-        font-size: 0.875rem;
-        margin-bottom: 1.25rem;
-        line-height: 1.5;
-    }
-    
-    .btn-primary, .btn-cta {
-        padding: 0.75rem 1.5rem;
-        font-size: 0.875rem;
-        width: 100%;
-    }
-    
-    .status-indicator {
-        top: 1rem;
-        right: 1rem;
-        width: 6px;
-        height: 6px;
-    }
-    
-    /* Profile */
-    .profile {
-        grid-column: span 1;
-        grid-row: span 3;
-        padding: 1.25rem 0.875rem;
-        gap: 1.25rem;
-    }
-    
-    .profile-avatar-large {
-        width: 70px;
-        height: 70px;
-    }
-    
-    .profile-name {
-        font-size: 1.125rem;
-    }
-    
-    .profile-socials-grid {
-        gap: 1.25rem;
-        margin-top: 0.5rem;
-    }
-    
-    .social-btn svg {
-        width: 26px;
-        height: 26px;
-    }
-    
-    .profile-cta-btn {
-        padding: 0.75rem 1.25rem;
-        font-size: 0.85rem;
-    }
-    
-    /* Work Cards */
-    .work {
-        grid-column: span 1;
-        grid-row: span 2;
-    }
-    
-    .work-overlay {
-        transform: translateY(0);
-        opacity: 1;
-        padding: 1rem;
-    }
-    
-    .work-overlay h3 {
-        font-size: 1.1rem;
-    }
-    
-    .work-overlay p {
-        font-size: 0.8rem;
-    }
-    
-    /* Featured Work */
-    .featured {
-        grid-column: span 1;
-        grid-row: span 2;
-    }
-    
-    /* Services */
-    .service {
-        grid-column: span 1;
-        grid-row: span 2;
-    }
-    
-    .service-icon {
-        width: 36px;
-        height: 36px;
-        margin-bottom: 1rem;
-    }
-    
-    .service h4 {
-        font-size: 1rem;
-    }
-    
-    .service p {
-        font-size: 0.85rem;
-    }
-    
-    /* Tools */
-    .tools {
-        grid-column: span 1;
-        grid-row: span 3;
-        padding: 1rem 0 1rem 0 !important;
-    }
-    
-    .tools-title {
-        font-size: 0.875rem;
-        padding: 0 0.875rem;
-    }
-    
-    .tools-grid {
-        grid-template-columns: repeat(3, 1fr);
-        gap: 0.375rem;
-    }
-    
-    .tool-item svg,
-    .tool-item img {
-        width: 28px;
-        height: 28px;
-    }
-    
-    .tool-item:nth-child(n+10) {
-        display: none;
-    }
-    
-    .tools-view-all {
-        font-size: 0.8rem;
-        padding: 0.625rem 1rem;
-        margin: 0.375rem 0.875rem 0 0.875rem;
-        width: calc(100% - 1.75rem);
-    }
-    
-    /* Quote Card */
-    .quote-card {
-        grid-column: span 1;
-        grid-row: span 3;
-        padding: 1.25rem;
-    }
-    
-    .quote-mark {
-        font-size: 4rem;
-        top: 0.75rem;
-        left: 1rem;
-    }
-    
-    .quote-text {
-        font-size: 1.05rem;
-        line-height: 1.5;
-        margin-bottom: 1.25rem;
-    }
-    
-    .quote-author {
-        font-size: 0.8rem;
-    }
-    
-    /* Stats */
-    .stat-card, .mini-stats-card {
-        grid-column: span 1;
-        grid-row: span 1;
-    }
-    
-    .mini-stats-card {
-        grid-row: span 2;
-        gap: 1.25rem;
-        padding: 1.5rem 1rem;
-    }
-    
-    .mini-stat-number {
-        font-size: 1.875rem;
-    }
-    
-    .stat-number {
-        font-size: 2rem;
-    }
-    
-    .stat-icon {
-        font-size: 1.5rem;
-    }
-    
-    /* GitHub Cards */
-    .github-contributions, .github-stats, .github-card {
-        grid-column: span 1;
-        grid-row: span 1;
-    }
-    
-    /* Status Card */
-    .status-card {
-        grid-column: span 1;
-        grid-row: span 2;
-    }
-    
-    .status-badge {
-        font-size: 0.8rem;
-        padding: 0.375rem 0.875rem;
-    }
-    
-    .status-title {
-        font-size: 1.25rem;
-    }
-    
-    .status-desc {
-        font-size: 0.875rem;
-    }
-    
-    .tag {
-        font-size: 0.8rem;
-        padding: 0.3rem 0.65rem;
-    }
-    
-    /* Location Card */
-    .location-card {
-        grid-column: span 1;
-        grid-row: span 2;
-    }
-    
-    .location-icon {
-        width: 36px;
-        height: 36px;
-    }
-    
-    .location-card h4 {
-        font-size: 1.125rem;
-    }
-    
-    .location-time {
-        font-size: 1.5rem;
-    }
-    
-    /* Certifications */
-    .certifications-card {
-        grid-column: span 1;
-        grid-row: span 3;
-    }
-    
-    .cert-title {
-        font-size: 0.875rem;
-        margin-bottom: 1.25rem;
-    }
-    
-    .cert-list {
-        gap: 0.875rem;
-    }
-    
-    .cert-icon {
-        width: 36px;
-        height: 36px;
-    }
-    
-    .cert-info h5 {
-        font-size: 1rem;
-    }
-    
-    .cert-info p {
-        font-size: 0.85rem;
-    }
-    
-    /* Coffee Card */
-    .coffee-card {
-        grid-column: span 1;
-        grid-row: span 2;
-    }
-    
-    .coffee-emoji {
-        font-size: 2.5rem;
-    }
-    
-    .coffee-card h4 {
-        font-size: 1.125rem;
-    }
-    
-    /* Works CTA */
-    .works-cta {
-        grid-column: span 1;
-        grid-row: span 2;
-        order: 9999;
-    }
-    
-    .works-cta-title {
-        font-size: 3rem;
-        line-height: 0.95;
-    }
-    
-    .works-cta-inner {
-        padding: 1.5rem 1rem;
-    }
-    
-    /* Contact Card */
-    .contact-card {
-        grid-column: span 1;
-        grid-row: span 2;
-    }
-    
-    .contact-methods {
-        grid-template-columns: 1fr;
-        gap: 0.75rem;
-    }
-    
-    .contact-method {
-        padding: 0.875rem;
-    }
-    
-    .contact-method svg {
-        width: 20px;
-        height: 20px;
-    }
-    
-    /* Accent Box */
-    .accent-box {
-        grid-column: span 1;
-        grid-row: span 1;
-    }
-    
-    /* Blog Card */
-    .blog-card {
-        grid-column: span 1;
-        grid-row: span 2;
-    }
-    
-    .blog-title {
-        font-size: 1.125rem;
-    }
-}
+/* RESPONSIVE DESIGN - Mobile First Approach */
 
-/* Small Mobile: 375px - 480px */
-@media (min-width: 375px) and (max-width: 480px) {
+/* Small Mobile: 320px - 480px */
+@media (max-width: 480px) {
     body {
         padding: 0.75rem;
     }
@@ -1863,13 +1510,20 @@ body {
         gap: 0.75rem;
         grid-auto-rows: 160px;
     }
+
+    /* On the smallest screens, switch to a simple column flow so `order` behaves reliably
+       and Grid auto-placement/dense packing doesn't reorder items unexpectedly. */
+    .container {
+        display: flex;
+        flex-direction: column;
+    }
     
     .card {
         padding: 1.25rem;
         border-radius: 12px;
     }
     
-    /* Work overlay always visible on touch devices */
+    /* Always show work overlay on mobile (no hover) */
     .work-overlay {
         transform: translateY(0);
         opacity: 1;
@@ -1893,7 +1547,7 @@ body {
         margin-bottom: 1.5rem;
     }
     
-    .btn-primary, .btn-cta {
+    .btn-primary {
         padding: 0.875rem 1.75rem;
         font-size: 0.9rem;
     }
@@ -1923,40 +1577,26 @@ body {
         height: 28px;
     }
     
-    /* Card Ordering for Mobile */
-    .hero { order: 1; }
-    .profile { order: 2; }
-    .service { order: 3; }
-    .work-luveian { order: 4; }
-    .work-king-rajasthan { order: 5; }
-    .work-shyam-kemicals { order: 6; }
-    .work-nex { order: 7; }
-    .tools { order: 8; }
-    .github-contributions { order: 9; }
-    .github-stats { order: 10; }
-    .quote-card { order: 11; }
-    .mini-stats-card { order: 12; }
-    .status-card { order: 13; }
-    .location-card { order: 14; }
-    .certifications-card { order: 15; }
-    .github-card { order: 16; }
-    .coffee-card { order: 17; }
-    .contact-card { order: 18; }
-    .accent-box { order: 19; }
-    .works-cta { order: 20; }
-    
-    /* All cards span 1 column on mobile */
+    /* All cards span 1 column */
     .featured, .work, .quote-card, .tools, 
     .status-card, .location-card, .certifications-card,
     .coffee-card, .works-cta, .github-card, 
     .contact-card, .accent-box, .service,
-    .github-contributions, .github-stats, .mini-stats-card,
-    .blog-card {
+    .github-contributions, .github-stats, .mini-stats-card {
         grid-column: span 1;
     }
     
+    /* Mobile card order: Experience cards → Mini stats → All work cards → Tools */
+    .service { order: 1; }
+    /* ensure the mini-stats card appears before the work items */
+    .mini-stats-card { order: 2; }
+    /* group all work cards together immediately following the mini-stats card */
+    .work { order: 3; }
+    .tools { order: 6; }
+
+    
     /* Adjust specific card heights */
-    .work, .service, .featured {
+    .work, .service {
         grid-row: span 2;
     }
     
@@ -1973,16 +1613,13 @@ body {
         font-size: 1.25rem;
     }
     
-    .quote-mark {
-        font-size: 5rem;
-    }
-    
     .works-cta {
         grid-row: span 2;
+        order: 9999; /* Move to end on mobile */
     }
     
     .works-cta-title {
-        font-size: 3.5rem;
+        font-size: 4rem;
         line-height: 0.95;
     }
     
@@ -1995,6 +1632,7 @@ body {
         gap: 0.5rem;
     }
     
+    /* Hide extra tech items on mobile - show only first 9 */
     .tool-item:nth-child(n+10) {
         display: none;
     }
@@ -2031,14 +1669,6 @@ body {
     .mini-stat-number {
         font-size: 2rem;
     }
-    
-    .contact-card {
-        grid-row: span 2;
-    }
-    
-    .contact-methods {
-        grid-template-columns: 1fr;
-    }
 }
 
 /* Mobile: 481px - 640px */
@@ -2057,7 +1687,7 @@ body {
         padding: 1.5rem;
     }
     
-    /* Work overlay always visible on touch devices */
+    /* Always show work overlay on mobile (no hover) */
     .work-overlay {
         transform: translateY(0);
         opacity: 1;
@@ -2079,14 +1709,6 @@ body {
     .profile {
         grid-column: span 2;
         grid-row: span 2;
-        flex-direction: row;
-        text-align: left;
-        justify-content: space-between;
-    }
-    
-    .profile-top {
-        flex-direction: row;
-        align-items: center;
     }
     
     .profile-avatar-large {
@@ -2094,97 +1716,46 @@ body {
         height: 90px;
     }
     
-    .profile-socials-grid {
-        flex-direction: column;
-        gap: 1rem;
-        margin-top: 0;
-    }
-    
-    .profile-cta-btn {
-        width: auto;
-        align-self: flex-end;
-    }
-    
-    /* 2-column cards */
     .featured, .work, .quote-card, .tools,
-    .certifications-card, .coffee-card, .contact-card {
+    .certifications-card, .coffee-card {
         grid-column: span 2;
-    }
-    
-    .featured {
-        grid-row: span 2;
-    }
-    
-    .work {
-        grid-row: span 2;
-    }
-    
-    .quote-card {
-        grid-row: span 2;
-    }
-    
-    .tools {
-        grid-row: span 3;
     }
     
     .works-cta {
         grid-column: span 2;
         grid-row: span 2;
+        order: 9999; /* Move to end on mobile */
     }
     
     .works-cta-title {
-        font-size: 4rem;
+        font-size: 4.5rem;
         line-height: 0.95;
     }
     
-    .certifications-card {
-        grid-row: span 2;
-    }
+    /* Reorder work cards on narrow mobile to appear right after the mini-stats card */
+    .service { order: 1; }
+    .mini-stats-card { order: 2; }
+    .work { order: 3; }
     
-    .coffee-card {
-        grid-row: span 2;
-    }
-    
-    /* 1-column cards */
     .service, .stat-card, .github-contributions,
     .github-stats, .mini-stats-card, .status-card,
-    .location-card, .github-card, .accent-box,
-    .blog-card {
+    .location-card, .github-card, .accent-box {
         grid-column: span 1;
-    }
-    
-    .service {
-        grid-row: span 2;
-    }
-    
-    .mini-stats-card {
-        grid-row: span 2;
-    }
-    
-    .status-card {
-        grid-row: span 2;
     }
     
     .location-card {
         grid-row: span 2;
     }
     
-    .github-card {
-        grid-row: span 1;
-    }
-    
-    .blog-card {
-        grid-row: span 2;
-    }
-    
     .contact-card {
-        grid-row: span 2;
+        grid-column: span 2;
     }
     
     .tools-grid {
         grid-template-columns: repeat(4, 1fr);
     }
     
+    /* Hide extra tech items on mobile - show only first 12 */
     .tool-item:nth-child(n+13) {
         display: none;
     }
@@ -2196,122 +1767,8 @@ body {
     }
 }
 
-/* Tablet: 641px - 768px */
-@media (min-width: 641px) and (max-width: 768px) {
-    body {
-        padding: 1.25rem;
-    }
-    
-    .container {
-        grid-template-columns: repeat(4, 1fr);
-        gap: 1rem;
-        grid-auto-rows: 190px;
-    }
-    
-    .card {
-        padding: 1.75rem;
-    }
-    
-    /* Work overlay always visible on touch devices */
-    .work-overlay {
-        transform: translateY(0);
-        opacity: 1;
-    }
-    
-    .hero {
-        grid-column: span 3;
-        grid-row: span 3;
-    }
-    
-    .hero h1 {
-        font-size: 3.25rem;
-    }
-    
-    .profile {
-        grid-column: span 1;
-        grid-row: span 3;
-    }
-    
-    .featured {
-        grid-column: span 2;
-        grid-row: span 2;
-    }
-    
-    .work {
-        grid-column: span 2;
-        grid-row: span 2;
-    }
-    
-    .quote-card {
-        grid-column: span 2;
-        grid-row: span 2;
-    }
-    
-    .tools {
-        grid-column: span 2;
-        grid-row: span 3;
-    }
-    
-    .tools-grid {
-        grid-template-columns: repeat(4, 1fr);
-    }
-    
-    .tool-item:nth-child(n+17) {
-        display: none;
-    }
-    
-    .works-cta {
-        grid-column: span 2;
-        grid-row: span 2;
-    }
-    
-    .works-cta-title {
-        font-size: 3.5rem;
-    }
-    
-    .service {
-        grid-column: span 2;
-        grid-row: span 2;
-    }
-    
-    .certifications-card {
-        grid-column: span 2;
-        grid-row: span 2;
-    }
-    
-    .coffee-card {
-        grid-column: span 2;
-        grid-row: span 2;
-    }
-    
-    .contact-card {
-        grid-column: span 2;
-        grid-row: span 1;
-    }
-    
-    .status-card {
-        grid-column: span 2;
-        grid-row: span 2;
-    }
-    
-    .location-card {
-        grid-column: span 2;
-        grid-row: span 1;
-    }
-    
-    .mini-stats-card {
-        grid-column: span 1;
-        grid-row: span 2;
-    }
-    
-    .github-contributions, .github-stats, .github-card, .accent-box {
-        grid-column: span 2;
-        grid-row: span 1;
-    }
-}
-
-/* Tablet: 769px - 1024px */
-@media (min-width: 769px) and (max-width: 1024px) {
+/* Tablet: 641px - 1024px */
+@media (min-width: 641px) and (max-width: 1024px) {
     body {
         padding: 1.5rem;
     }
@@ -2326,6 +1783,12 @@ body {
         padding: 1.75rem;
     }
     
+    /* Always show work overlay on tablet (many tablets are touch-only) */
+    .work-overlay {
+        transform: translateY(0);
+        opacity: 1;
+    }
+    
     .hero {
         grid-column: span 3;
         grid-row: span 3;
@@ -2358,10 +1821,6 @@ body {
     .tools {
         grid-column: span 2;
         grid-row: span 3;
-    }
-    
-    .tools-grid {
-        grid-template-columns: repeat(5, 1fr);
     }
     
     .works-cta {
@@ -2390,254 +1849,62 @@ body {
     
     .contact-card {
         grid-column: span 2;
-        grid-row: span 1;
     }
-}
-
-/* Small Desktop: 1025px - 1280px */
-@media (min-width: 1025px) and (max-width: 1280px) {
-    .container {
+    
+    .tools-grid {
         grid-template-columns: repeat(5, 1fr);
-        grid-auto-rows: 200px;
-    }
-    
-    .hero {
-        grid-column: span 3;
-        grid-row: span 3;
-    }
-    
-    .hero h1 {
-        font-size: 4rem;
-    }
-    
-    .profile {
-        grid-column: span 2;
-        grid-row: span 3;
-    }
-    
-    .featured {
-        grid-column: span 3;
-        grid-row: span 2;
-    }
-    
-    .works-cta {
-        grid-column: span 2;
-        grid-row: span 2;
-    }
-    
-    .works-cta-title {
-        font-size: 4rem;
-    }
-    
-    .quote-card {
-        grid-column: span 3;
-        grid-row: span 2;
-    }
-    
-    .tools {
-        grid-column: span 2;
-        grid-row: span 3;
-    }
-    
-    .work {
-        grid-column: span 2;
-        grid-row: span 2;
-    }
-    
-    .service {
-        grid-column: span 2;
-        grid-row: span 2;
-    }
-    
-    .coffee-card {
-        grid-column: span 2;
-        grid-row: span 2;
-    }
-    
-    .contact-card {
-        grid-column: span 3;
-        grid-row: span 1;
     }
 }
 
-/* Medium Desktop: 1281px - 1440px */
-@media (min-width: 1281px) and (max-width: 1440px) {
-    .container {
-        max-width: 1400px;
-        grid-template-columns: repeat(6, 1fr);
-        grid-auto-rows: 200px;
-    }
-    
-    .hero {
-        grid-column: span 4;
-        grid-row: span 3;
-    }
-    
-    .hero h1 {
-        font-size: 5rem;
-    }
-    
-    .profile {
-        grid-column: span 2;
-        grid-row: span 3;
-    }
-    
-    .featured {
-        grid-column: span 3;
-        grid-row: span 2;
-    }
-    
-    .works-cta {
-        grid-column: 5 / span 2;
-        grid-row: span 2;
-    }
-    
-    .works-cta-title {
-        font-size: 4.5rem;
-    }
-    
-    .quote-card {
-        grid-column: span 3;
-        grid-row: span 2;
-    }
-    
-    .tools {
-        grid-column: span 2;
-        grid-row: span 3;
-    }
-    
-    .coffee-card {
-        grid-column: 3 / span 2;
-        grid-row: span 2;
-    }
-    
-    .contact-card {
-        grid-column: 1 / span 3;
-        grid-row: span 1;
-    }
-}
 
-/* Large Desktop: 1441px+ */
-@media (min-width: 1441px) {
+/* Large Desktop: 1281px+ (Default is optimized for this) */
+@media (min-width: 1281px) {
     .container {
         max-width: 1600px;
-        grid-template-columns: repeat(6, 1fr);
-        grid-auto-rows: 200px;
     }
-    
+}
+
+/* Extra adjustments for very small screens */
+@media (max-width: 360px) {
     .hero h1 {
-        font-size: 5rem;
+        font-size: 1.75rem;
     }
     
     .works-cta-title {
-        font-size: 4.5rem;
-    }
-}
-
-/* Ultra-wide Screens: 1920px+ */
-@media (min-width: 1920px) {
-    .container {
-        max-width: 1800px;
-        grid-auto-rows: 220px;
-        gap: 1.25rem;
+        font-size: 3.5rem;
+        line-height: 0.95;
     }
     
-    .card {
-        padding: 2.25rem;
-    }
-    
-    .hero h1 {
-        font-size: 5.5rem;
-    }
-    
-    .hero-subtitle {
-        font-size: 1.25rem;
-    }
-}
-
-/* Landscape Mode Adjustments for Mobile/Tablet */
-@media (max-height: 600px) and (orientation: landscape) {
-    body {
-        padding: 1rem;
-    }
-    
-    .container {
-        grid-auto-rows: 140px;
-        gap: 0.75rem;
-    }
-    
-    .card {
-        padding: 1.25rem;
-    }
-    
-    .hero h1 {
-        font-size: 2.5rem;
-    }
-    
-    .hero-subtitle {
-        font-size: 0.9rem;
-        margin-bottom: 1rem;
+    .works-cta {
+        order: 9999; /* Move to end on extra small screens */
     }
     
     .quote-text {
-        font-size: 1.125rem;
+        font-size: 1.1rem;
     }
     
-    .works-cta-title {
-        font-size: 3rem;
-    }
-}
-
-/* High DPI Screens */
-@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
-    .card {
-        border-width: 0.5px;
+    .location-card {
+        grid-row: span 2;
     }
     
-    .profile-avatar-large {
-        border-width: 1px;
-    }
-}
-
-/* Reduced Motion Preference */
-@media (prefers-reduced-motion: reduce) {
-    * {
-        animation-duration: 0.01ms !important;
-        animation-iteration-count: 1 !important;
-        transition-duration: 0.01ms !important;
+    .tools-grid {
+        grid-template-columns: repeat(3, 1fr);
     }
     
-    .work-overlay {
-        transform: none !important;
-        opacity: 1 !important;
-    }
-}
-
-/* Print Styles */
-@media print {
-    body {
-        background: white;
-        color: black;
-        padding: 0;
-    }
-    
-    .container {
-        display: block;
-    }
-    
-    .card {
-        page-break-inside: avoid;
-        border: 1px solid #ddd;
-        margin-bottom: 1rem;
-    }
-    
-    .status-indicator,
-    .btn-primary,
-    .btn-cta,
-    .profile-cta-btn,
-    .tools-view-all,
-    .coffee-btn,
-    .social-btn {
+    /* Hide extra tech items on extra small screens - show only first 9 */
+    .tool-item:nth-child(n+10) {
         display: none;
+    }
+    
+    .tool-item svg,
+    .tool-item img {
+        width: 28px;
+        height: 28px;
+    }
+    
+    /* Always show work overlay on extra small screens */
+    .work-overlay {
+        transform: translateY(0);
+        opacity: 1;
     }
 }
