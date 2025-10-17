@@ -503,23 +503,6 @@
             border-color: #333333;
         }
 
-        .qr-actions {
-            display: flex;
-            gap: 0.75rem;
-            margin-top: 1rem;
-        }
-
-        .open-upi-btn {
-            background: linear-gradient(90deg, #06b6d4, #3b82f6);
-            color: #fff;
-            border: none;
-        }
-
-        .open-upi-btn:hover {
-            filter: brightness(1.05);
-            transform: translateY(-2px);
-        }
-
         /* Thank You Card */
         .thanks-card {
             grid-column: span 4;
@@ -883,22 +866,22 @@
             <h4 class="card-title">Choose Amount (UPI)</h4>
             <div class="tip-grid">
                 <div class="tip-option" data-amount="25">
-                    <div class="tip-amount">₹25</div>
+                    <div class="tip-amount">25</div>
                 </div>
                 <div class="tip-option" data-amount="50">
-                    <div class="tip-amount">₹50</div>
+                    <div class="tip-amount">50</div>
                 </div>
                 <div class="tip-option" data-amount="75">
                     <div class="tip-amount">₹75</div>
                 </div>
                 <div class="tip-option" data-amount="100">
-                    <div class="tip-amount">₹100</div>
+                    <div class="tip-amount">100</div>
                 </div>
                 <div class="tip-option" data-amount="200">
-                    <div class="tip-amount">₹200</div>
+                    <div class="tip-amount">200</div>
                 </div>
                 <div class="tip-option" data-amount="500">
-                    <div class="tip-amount">₹500</div>
+                    <div class="tip-amount">500</div>
                 </div>
             </div>
             <div class="custom-input-wrapper">
@@ -914,10 +897,7 @@
                 <p><strong>UPI ID:</strong> aaryansrao5@okhdfcbank</p>
                 <p id="amountDisplay" style="display: none;"><strong>Amount:</strong> ₹<span id="displayAmount">0</span></p>
             </div>
-            <div class="qr-actions">
-                <button class="copy-btn" id="copyUPI">Copy UPI ID</button>
-                <button class="copy-btn open-upi-btn" id="openUPI" aria-label="Open in UPI app">Open in UPI App</button>
-            </div>
+            <button class="copy-btn" id="copyUPI">Copy UPI ID</button>
         </div>
 
         <!-- Thank You -->
@@ -1267,24 +1247,6 @@
             setTimeout(() => {
                 this.textContent = 'Copy UPI ID';
             }, 2000);
-        });
-
-        // Open in UPI app
-        document.getElementById('openUPI').addEventListener('click', function() {
-            // prefer the selected amount; if not set, check custom input
-            const amount = selectedAmount > 0 ? selectedAmount : (parseInt(customInput.value) || 0);
-            let upiUri = `upi://pay?pa=aaryansrao5@okhdfcbank&pn=Aryans Rao&cu=INR`;
-            if (amount > 0) {
-                upiUri += `&am=${amount}`;
-            }
-
-            // create a temporary anchor to trigger navigation — mobile OS should offer open-in-app prompt
-            const a = document.createElement('a');
-            a.href = upiUri;
-            a.style.display = 'none';
-            document.body.appendChild(a);
-            a.click();
-            setTimeout(() => document.body.removeChild(a), 2000);
         });
 
         // Portfolio CTA Navigation
