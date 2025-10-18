@@ -43,74 +43,6 @@
             padding: 0;
         }
         
-        /* Minimal creative back-to-home pill button */
-        .back-link {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.6rem;
-            color: var(--text);
-            text-decoration: none;
-            font-size: 0.95rem;
-            margin-bottom: 1.5rem;
-            padding: 6px 10px;
-            height: 40px;
-            border-radius: 999px;
-            background: rgba(255,255,255,0.03);
-            backdrop-filter: blur(8px) saturate(1.05);
-            border: 1px solid rgba(255,255,255,0.06);
-            transition: transform 220ms cubic-bezier(.2,.9,.3,1), box-shadow 220ms ease, background 220ms ease;
-            box-shadow: 0 1px 0 rgba(255,255,255,0.02) inset;
-            -webkit-tap-highlight-color: transparent;
-        }
-
-        .back-link:focus {
-            outline: none;
-            box-shadow: 0 6px 18px rgba(0,0,0,0.45), 0 0 0 3px rgba(255,255,255,0.03);
-            transform: translateY(-2px);
-        }
-
-        .back-link .back-icon {
-            width: 28px;
-            height: 28px;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 8px;
-            transition: transform 200ms ease, background 200ms ease;
-            color: inherit;
-        }
-
-        .back-link .back-icon svg {
-            width: 18px;
-            height: 18px;
-            display: block;
-        }
-
-        .back-link .back-label {
-            display: inline-block;
-            font-weight: 600;
-            font-size: 0.95rem;
-            white-space: nowrap;
-            opacity: 0;
-            transform: translateX(-6px);
-            transition: opacity 180ms ease, transform 180ms ease;
-            color: var(--text);
-        }
-
-        .back-link:hover, .back-link:focus, .back-link.is-hover {
-            transform: translateY(-3px);
-            background: rgba(255,255,255,0.05);
-        }
-
-        .back-link:hover .back-label, .back-link:focus .back-label, .back-link.is-hover .back-label {
-            opacity: 1;
-            transform: translateX(0);
-        }
-
-        .back-link:hover .back-icon, .back-link:focus .back-icon, .back-link.is-hover .back-icon {
-            transform: rotate(-6deg) translateX(-1px);
-        }
-        
         /* Use the same bento-grid as home page */
         .bento-grid {
             display: grid;
@@ -291,10 +223,6 @@
             
             .work-hero-subtitle {
                 font-size: 0.95rem;
-            }
-            
-            .back-link {
-                margin-bottom: 1rem;
             }
             
             /* Card Order on Mobile - Exact sequence as requested */
@@ -672,16 +600,6 @@
     <!-- Removed unused skip link: page content already provides a main landmark via #main-content -->
 
     <div class="work-page-container">
-        <a href="/" class="back-link" aria-label="Back to home">
-            <span class="back-icon" aria-hidden="true">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M10 19l-7-7 7-7" />
-                    <path d="M3 12h18" />
-                </svg>
-            </span>
-            <span class="back-label">Back</span>
-        </a>
-        
     <div class="bento-grid" id="main-content" role="main">
             <!-- Hero Card -->
             <div class="card work-hero">
@@ -1308,19 +1226,7 @@
                 this.style.transform = 'translateY(0)';
             });
         });
-        
-        // Back link interaction: toggle CSS class instead of inline transforms
-        const backLink = document.querySelector('.back-link');
-        if (backLink) {
-            const setHover = (on) => backLink.classList.toggle('is-hover', !!on);
-            backLink.addEventListener('mouseenter', () => setHover(true));
-            backLink.addEventListener('mouseleave', () => setHover(false));
-            backLink.addEventListener('focus', () => setHover(true), true);
-            backLink.addEventListener('blur', () => setHover(false), true);
-            // touch interactions
-            backLink.addEventListener('touchstart', () => setHover(true));
-            document.addEventListener('touchend', () => setHover(false));
-        }
+
     </script>
     <script src="script.js"></script>
     <script type="module" src="threejs-scene.js"></script>
