@@ -1,0 +1,10 @@
+# GitHub Pages Configuration
+permalink: pretty
+
+# Optional: Add metadata
+title: Aryan S Rao - Portfolio
+description: Full Stack Developer Portfolio
+
+# Exclude files from processing
+exclude:
+    - /assets
