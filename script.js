@@ -401,6 +401,23 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     // Tech Stack overlay removed: handlers and data intentionally deleted to keep button inert
+    // Wire the Tools "View All" button to StackShare profile
+    const toolsViewAllBtn = document.querySelector('.tools-view-all');
+    if (toolsViewAllBtn) {
+        toolsViewAllBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            const url = 'https://stackshare.io/aryansrao/my-stack';
+            // Open in new tab/window
+            window.open(url, '_blank', 'noopener');
+        });
+        // Make keyboard activation behave the same way
+        toolsViewAllBtn.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                toolsViewAllBtn.click();
+            }
+        });
+    }
 
     // Work card click handling: open external links or show overlay for logos
     function createImageOverlay(src, alt = '', originImgEl = null) {
