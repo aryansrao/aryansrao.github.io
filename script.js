@@ -400,75 +400,7 @@ document.addEventListener('DOMContentLoaded', () => {
         card.addEventListener('blur', deactivate, true);
     });
 
-    // Tech Modal: data and handlers
-    const techItems = [
-        { id: 'python', name: 'Python', desc: 'High-level programming language known for simplicity and readability.', usage: 'When I need rapid prototyping, data analysis, or building ML/AI applications.', icon: 'https://cdn.simpleicons.org/python/FFFFFF' },
-        { id: 'javascript', name: 'JavaScript', desc: 'Versatile programming language for web development.', usage: 'For all web development projects requiring interactivity and dynamic content.', icon: 'https://cdn.simpleicons.org/javascript/FFFFFF' },
-        { id: 'nodejs', name: 'Node.js', desc: 'JavaScript runtime for server-side development.', usage: 'When building scalable backend services and real-time applications.', icon: 'https://cdn.simpleicons.org/nodedotjs/FFFFFF' },
-        { id: 'react', name: 'React', desc: 'Component-driven UI library for building user interfaces.', usage: 'For complex, interactive web applications that need reusable UI components.', icon: 'https://cdn.simpleicons.org/react/FFFFFF' },
-        { id: 'java', name: 'Java', desc: 'Object-oriented programming language for enterprise applications.', usage: 'For Android development and when enterprise-grade reliability is required.', icon: 'https://cdn.simpleicons.org/java/FFFFFF' },
-        { id: 'cplusplus', name: 'C++', desc: 'High-performance systems programming language.', usage: 'When maximum performance and low-level control are critical requirements.', icon: 'https://cdn.simpleicons.org/cplusplus/FFFFFF' },
-        { id: 'rust', name: 'Rust', desc: 'Systems programming language focused on safety and speed.', usage: 'For system-level programming where memory safety and performance matter most.', icon: 'https://cdn.simpleicons.org/rust/FFFFFF' },
-        { id: 'c', name: 'C', desc: 'Low-level programming language for system programming.', usage: 'When working with embedded systems or when direct hardware control is needed.', icon: 'https://cdn.simpleicons.org/c/FFFFFF' },
-        { id: 'html', name: 'HTML', desc: 'Standard markup language for creating web pages.', usage: 'The foundation of every web project I build.', icon: 'https://cdn.simpleicons.org/html5/FFFFFF' },
-        { id: 'css', name: 'CSS', desc: 'Style sheet language for describing presentation of web documents.', usage: 'For creating beautiful, responsive, and accessible user interfaces.', icon: 'https://cdn.simpleicons.org/css/FFFFFF' },
-        { id: 'arduino', name: 'Arduino', desc: 'Open-source electronics platform for prototyping.', usage: 'When exploring IoT projects and hardware prototyping.', icon: 'https://cdn.simpleicons.org/arduino/FFFFFF' },
-        { id: 'git', name: 'Git', desc: 'Distributed version control system.', usage: 'Essential for all software development projects to track changes and collaborate.', icon: 'https://cdn.simpleicons.org/git/FFFFFF' },
-        { id: 'nextjs', name: 'Next.js', desc: 'React framework for production web applications.', usage: 'For full-stack React applications needing SSR, SSG, or advanced routing.', icon: 'https://cdn.simpleicons.org/nextdotjs/FFFFFF' },
-        { id: 'threejs', name: 'Three.js', desc: 'WebGL library for 3D in the browser.', usage: 'When adding interactive 3D visualizations and immersive web experiences.', icon: 'https://cdn.simpleicons.org/threedotjs/FFFFFF' },
-        { id: 'figma', name: 'Figma', desc: 'Collaborative interface design tool.', usage: 'For designing user interfaces and creating design systems.', icon: 'https://cdn.simpleicons.org/figma/FFFFFF' },
-        { id: 'blender', name: 'Blender', desc: 'Free and open-source 3D creation suite.', usage: 'When creating 3D models, animations, or visual effects for projects.', icon: 'https://cdn.simpleicons.org/blender/FFFFFF' },
-        { id: 'adobe', name: 'Adobe Creative Suite', desc: 'Professional design and multimedia software suite.', usage: 'For advanced graphic design, video editing, and creative content production.', icon: 'https://cdn.simpleicons.org/adobe/FFFFFF' },
-        { id: 'androidstudio', name: 'Android Studio', desc: 'Official IDE for Android application development.', usage: 'Whenever developing native Android applications.', icon: 'https://cdn.simpleicons.org/androidstudio/FFFFFF' },
-        { id: 'xcode', name: 'Xcode', desc: 'Integrated development environment for macOS.', usage: 'For iOS and macOS application development.', icon: 'https://cdn.simpleicons.org/xcode/FFFFFF' },
-        { id: 'firebase', name: 'Firebase', desc: 'Platform for building web and mobile applications.', usage: 'For quick backend setup, authentication, and real-time features.', icon: 'https://cdn.simpleicons.org/firebase/FFFFFF' },
-        { id: 'mongodb', name: 'MongoDB', desc: 'NoSQL document database for modern applications.', usage: 'When flexible, schema-less data storage is needed for modern applications.', icon: 'https://cdn.simpleicons.org/mongodb/FFFFFF' },
-        { id: 'supabase', name: 'Supabase', desc: 'Open-source Firebase alternative.', usage: 'For open-source backend solutions with real-time capabilities.', icon: 'https://cdn.simpleicons.org/supabase/FFFFFF' },
-        { id: 'mysql', name: 'MySQL', desc: 'Popular open-source relational database.', usage: 'For traditional relational data storage and complex queries.', icon: 'https://cdn.simpleicons.org/mysql/FFFFFF' },
-        { id: 'postgresql', name: 'PostgreSQL', desc: 'Advanced open-source relational database.', usage: 'When advanced SQL features and data integrity are crucial.', icon: 'https://cdn.simpleicons.org/postgresql/FFFFFF' },
-        { id: 'cloudinary', name: 'Cloudinary', desc: 'Cloud-based image and video management platform.', usage: 'For efficient media storage, optimization, and delivery in web applications.', icon: 'https://cdn.simpleicons.org/cloudinary/FFFFFF' }
-    ];
-
-    const modal = document.getElementById('tech-modal');
-    const modalContent = document.getElementById('tech-modal-content');
-    const openBtn = document.querySelector('.tools-view-all');
-    const closeBtn = modal ? modal.querySelector('.tech-modal-close') : null;
-
-    function buildTechCards() {
-        if (!modalContent) return;
-        modalContent.innerHTML = '';
-        techItems.forEach(item => {
-            const el = document.createElement('div');
-            el.className = 'tech-card';
-            el.innerHTML = `<img src="${item.icon}" alt="${item.name} icon" style="width: 48px; height: 48px; margin-bottom: 0.5rem;"><h4>${item.name}</h4><p><strong>${item.desc}</strong><br>${item.usage}</p>`;
-            modalContent.appendChild(el);
-        });
-    }
-
-    function openModal() {
-        if (!modal) return;
-        buildTechCards();
-        modal.setAttribute('aria-hidden', 'false');
-        // move focus to close button
-        setTimeout(() => { if (closeBtn) closeBtn.focus(); }, 20);
-        document.body.style.overflow = 'hidden';
-    }
-
-    function closeModal() {
-        if (!modal) return;
-        modal.setAttribute('aria-hidden', 'true');
-        document.body.style.overflow = '';
-        if (openBtn) openBtn.focus();
-    }
-
-    if (openBtn) openBtn.addEventListener('click', (e) => { e.preventDefault(); openModal(); });
-    if (closeBtn) closeBtn.addEventListener('click', closeModal);
-    // click on backdrop to close
-    if (modal) modal.addEventListener('click', (e) => {
-        if (e.target && e.target.hasAttribute('data-close')) closeModal();
-    });
-    // ESC to close
-    document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeModal(); });
+    // Tech Stack overlay removed: handlers and data intentionally deleted to keep button inert
 
     // Work card click handling: open external links or show overlay for logos
     function createImageOverlay(src, alt = '', originImgEl = null) {
