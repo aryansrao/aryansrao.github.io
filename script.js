@@ -439,7 +439,6 @@ document.addEventListener('DOMContentLoaded', () => {
         let vw = window.innerWidth, vh = window.innerHeight;
         let targetWidth = 0, targetHeight = 0, targetLeft = 0, targetTop = 0;
 
-        // Set initial rect (either origin or small centered box)
         if (originRect) {
             animImg.style.left = originRect.left + 'px';
             animImg.style.top = originRect.top + 'px';
@@ -452,6 +451,9 @@ document.addEventListener('DOMContentLoaded', () => {
             animImg.style.width = startW + 'px';
             animImg.style.height = startH + 'px';
         }
+        
+        // Force reflow to ensure initial position is rendered before animation
+        void animImg.offsetHeight;
 
         const cleanup = () => {
             if (expandTimeout) clearTimeout(expandTimeout);
