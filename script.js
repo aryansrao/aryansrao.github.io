@@ -610,3 +610,180 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 });
+// Custom Cursor System - Only for Project Cards
+(function() {
+    // Create custom cursor element
+    const cursor = document.createElement('div');
+    cursor.className = 'custom-cursor';
+    cursor.innerHTML = '<span class="cursor-text"></span>';
+    document.body.appendChild(cursor);
+    
+    const cursorText = cursor.querySelector('.cursor-text');
+    let mouseX = 0, mouseY = 0;
+    let cursorX = 0, cursorY = 0;
+    
+    // Add cursor styles
+    const style = document.createElement('style');
+    style.textContent = `
+        .custom-cursor {
+            position: fixed;
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.95);
+            border: 2px solid rgba(0, 0, 0, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            pointer-events: none;
+            z-index: 10000;
+            opacity: 0;
+            transform: translate(-50%, -50%) scale(0.5);
+            transition: opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1), 
+                        transform 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+                        width 0.3s ease,
+                        height 0.3s ease;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+            backdrop-filter: blur(8px);
+        }
+        
+        .custom-cursor.active {
+            opacity: 1;
+            transform: translate(-50%, -50%) scale(1);
+        }
+        
+        .cursor-text {
+            font-size: 11px;
+            font-weight: 600;
+            color: #000;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            text-align: center;
+            line-height: 1.2;
+            padding: 0 8px;
+        }
+        
+        /* Hide default cursor on hoverable elements */
+        .custom-cursor-active {
+            cursor: none !important;
+        }
+        
+        .custom-cursor-active * {
+            cursor: none !important;
+        }
+        
+        /* Responsive: disable on mobile/tablet */
+        @media (max-width: 1024px) {
+            .custom-cursor {
+                display: none !important;
+            }
+            
+            .custom-cursor-active,
+            .custom-cursor-active * {
+                cursor: auto !important;
+            }
+        }
+    `;
+    document.head.appendChild(style);
+    
+    // Smooth cursor follow animation
+    function animateCursor() {
+        const speed = 0.15;
+        cursorX += (mouseX - cursorX) * speed;
+        cursorY += (mouseY - cursorY) * speed;
+        
+        cursor.style.left = cursorX + 'px';
+        cursor.style.top = cursorY + 'px';
+        
+        requestAnimationFrame(animateCursor);
+    }
+    animateCursor();
+    
+    // Track mouse position
+    document.addEventListener('mousemove', (e) => {
+        mouseX = e.clientX;
+        mouseY = e.clientY;
+    });
+    
+    // Determine cursor text for project cards only
+    function getCursorText(element) {
+        const href = element.getAttribute('data-href');
+        const onclick = element.getAttribute('onclick');
+        
+        // Check if it's a GitHub link
+        if (href?.includes('github.com') || onclick?.includes('github.com')) {
+            return 'GitHub';
+        }
+        
+        // Check if it's an external website link
+        if (href && (href.startsWith('http') || href.startsWith('https'))) {
+            return 'Website';
+        }
+        
+        // Check for image overlay cards (King Rajasthan, etc.)
+        if (element.getAttribute('data-overlay-src') || 
+            element.classList.contains('work-king-image')) {
+            return 'Expand';
+        }
+        
+        // Default for work cards without specific link
+        return 'View';
+    }
+    
+    // Handle hover events
+    function handleMouseEnter(e) {
+        const target = e.currentTarget;
+        const text = getCursorText(target);
+        
+        cursorText.textContent = text;
+        cursor.classList.add('active');
+        document.body.classList.add('custom-cursor-active');
+    }
+    
+    function handleMouseLeave(e) {
+        cursor.classList.remove('active');
+        document.body.classList.remove('custom-cursor-active');
+    }
+    
+    // Apply hover listeners ONLY to project/work cards
+    function attachCursorListeners() {
+        // Remove existing listeners
+        document.querySelectorAll('[data-cursor-listener]').forEach(el => {
+            el.removeEventListener('mouseenter', handleMouseEnter);
+            el.removeEventListener('mouseleave', handleMouseLeave);
+            el.removeAttribute('data-cursor-listener');
+        });
+        
+        // Select ONLY work/project cards - nothing else
+        const projectCards = document.querySelectorAll(`
+            .card.work,
+            .card.featured
+        `);
+        
+        projectCards.forEach(element => {
+            // Skip if already has listener
+            if (element.hasAttribute('data-cursor-listener')) return;
+            
+            element.setAttribute('data-cursor-listener', 'true');
+            element.addEventListener('mouseenter', handleMouseEnter);
+            element.addEventListener('mouseleave', handleMouseLeave);
+        });
+    }
+    
+    // Initialize on page load
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', attachCursorListeners);
+    } else {
+        attachCursorListeners();
+    }
+    
+    // Re-attach listeners when new content is added
+    const contentObserver = new MutationObserver(() => {
+        attachCursorListeners();
+    });
+    
+    contentObserver.observe(document.body, {
+        childList: true,
+        subtree: true
+    });
+})();
