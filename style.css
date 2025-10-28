@@ -454,6 +454,37 @@ body {
     display: block;
 }
 
+/* Fix: make Nex tool image behave like other full-bleed work cards
+   - Force the Nex image to fill the card and use cover so it crops consistently
+   - Remove extra padding/background applied by .work-media for this specific card
+*/
+.work-nex-tool .work-media {
+    padding: 0; /* remove the 10px black padding around GIFs for this card */
+    background: transparent; /* avoid black background showing behind the image */
+}
+.work-nex-tool .work-media-inner img {
+    width: 100%;
+    height: 100%;
+    max-width: none;
+    max-height: none;
+    object-fit: cover; /* match other cards that use object-fit: cover */
+    display: block;
+}
+
+/* Also apply same behavior for the home-page Nex card (.work-nex) */
+.work-nex .work-media {
+    padding: 0;
+    background: transparent;
+}
+.work-nex .work-media-inner img {
+    width: 100%;
+    height: 100%;
+    max-width: none;
+    max-height: none;
+    object-fit: cover;
+    display: block;
+}
+
 .work-tag {
     display: inline-block;
     font-size: 0.75rem;
