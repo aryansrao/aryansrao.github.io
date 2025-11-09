@@ -7,6 +7,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <style>
         * {
@@ -92,8 +93,6 @@
             position: relative;
             overflow: hidden;
             transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
-            opacity: 0;
-            transform: translateY(40px);
         }
 
         .card::before {
@@ -117,11 +116,7 @@
         }
 
         .card.loaded {
-            opacity: 1;
-            transform: translateY(0);
-            transition: opacity 0.8s cubic-bezier(0.4, 0, 0.2, 1), 
-                        transform 0.8s cubic-bezier(0.4, 0, 0.2, 1),
-                        background 0.6s cubic-bezier(0.4, 0, 0.2, 1),
+            transition: background 0.6s cubic-bezier(0.4, 0, 0.2, 1),
                         border-color 0.6s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
@@ -1196,14 +1191,9 @@
             initSmallScene();
         }
 
-        // Card animations on load
+        // Loading animation removed - cards now display immediately
         document.addEventListener('DOMContentLoaded', () => {
             const cards = document.querySelectorAll('.card');
-            cards.forEach((card, index) => {
-                setTimeout(() => {
-                    card.classList.add('loaded');
-                }, index * 80);
-            });
 
             // Mouse glow effect
             cards.forEach(card => {
@@ -1305,5 +1295,6 @@
             });
         }
     </script>
+    </div>
 </body>
 </html>

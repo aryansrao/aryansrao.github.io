@@ -10,36 +10,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
     
-    // Intersection Observer for staggered fade-in
-    const observerOptions = {
-        threshold: 0.1,
-        rootMargin: '0px 0px -100px 0px'
-    };
-    
-    const observer = new IntersectionObserver((entries) => {
-        entries.forEach((entry) => {
-            if (entry.isIntersecting) {
-                const cards = Array.from(document.querySelectorAll('.card'));
-                const index = cards.indexOf(entry.target);
-                const delay = index * 40;
-                
-                setTimeout(() => {
-                    entry.target.style.opacity = '1';
-                    entry.target.style.transform = 'translateY(0)';
-                }, delay);
-                
-                observer.unobserve(entry.target);
-            }
-        });
-    }, observerOptions);
-    
-    // Initial setup and observe
-    document.querySelectorAll('.card').forEach(card => {
-        card.style.opacity = '0';
-        card.style.transform = 'translateY(40px)';
-        card.style.transition = 'opacity 0.8s cubic-bezier(0.4, 0, 0.2, 1), transform 0.8s cubic-bezier(0.4, 0, 0.2, 1)';
-        observer.observe(card);
-    });
+    // Loading animation removed - cards now display immediately without fade-in effect
     
     // Animated counters for stats
     const animateNumber = (element, target) => {
